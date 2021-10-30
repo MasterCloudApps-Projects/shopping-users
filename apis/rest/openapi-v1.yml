@@ -3,7 +3,7 @@ info:
   title:	users API
   description: Master cloud apps TFM users API.
   version: 1.0.0
-servers: 
+servers:
   - url: https://localhost:8443/api/v1
 paths:
   /auth:
