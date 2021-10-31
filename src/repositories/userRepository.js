@@ -8,7 +8,7 @@ function save(user) {
     return User.create({
         username: user.username,
         password: user.password,
-        balance: 0.0
+        balance: user.balance
     });
 }
 

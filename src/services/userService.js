@@ -11,7 +11,8 @@ function create(user) {
             }
             return userRepository.save({
                 username: user.username,
-                password: user.password ? bcrypt.hashSync(user.password, 8) : user.password
+                password: user.password ? bcrypt.hashSync(user.password, 8) : user.password,
+                balance: 0.0
             })
                 .then(user => {
                     console.log("Created user", user);
