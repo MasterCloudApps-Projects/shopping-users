@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserRequestDto = require('../dtos/userRequestDto.js');
+const userService = require('../services/userService.js');
 
 router.post('/', async (req, res) => {
 
@@ -12,10 +13,10 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ "error": error.message });
     }
 
-    const userId = 1;
-    res.header('Location', req.protocol + '://' + req.get('host') + req.originalUrl + '/' + userId)
+    const createdUser = await userService.create(userDto);
+    res.header('Location', req.protocol + '://' + req.get('host') + req.originalUrl + createdUser.id)
         .status(201)
-        .json({ id: userId });
+        .json({ id: createdUser.id });
 
 });
 
