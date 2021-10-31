@@ -21,7 +21,7 @@ To implement this service next technologies are used:
 To run application in local:
 1. Up database:
    ```
-   running docker run --rm -p 3306:3306 --name mysql-db -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=users -e -d mysql:latest
+   docker run --rm -p 3306:3306 --name mysql-db -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=users -e -d mysql:latest
    ```
 2. Install dependencies:
     ```
