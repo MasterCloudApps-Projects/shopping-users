@@ -6,6 +6,7 @@
         "dev": "nodemon src/server"
     },
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "express": "^4.17.1",
         "mysql2": "^2.3.2",
         "sequelize": "^6.8.0"

@@ -13,10 +13,18 @@ router.post('/', async (req, res) => {
         return res.status(400).send({ "error": error.message });
     }
 
-    const createdUser = await userService.create(userDto);
-    res.header('Location', req.protocol + '://' + req.get('host') + req.originalUrl + createdUser.id)
-        .status(201)
-        .json({ id: createdUser.id });
+    try {
+        const createdUser = await userService.create(userDto);
+        if (!createdUser) {
+            return res.status(409).send({ "error": "Already exists a user with that username" });
+        }
+        res.header('Location', req.protocol + '://' + req.get('host') + req.originalUrl + '/' + createdUser.id)
+            .status(201)
+            .json({ id: createdUser.id });
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ "error": error.message });
+    }
 
 });
 
