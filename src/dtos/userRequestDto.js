@@ -26,8 +26,8 @@ class UserRequestDto {
     }
     
     isValidPassword(password) {
-        let passwordFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).*$/;
-    
+        let passwordFormat = /(?=^.{8,}$)(?=.*\d)(?=.*[A-Z])(?=.*[a-z]).*$/;
+            
         return this.matchPattern(password, passwordFormat);
     }
 }
