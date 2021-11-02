@@ -7,6 +7,8 @@ module.exports = {
     'db.user': process.env.RDS_USERNAME || 'root',
     'db.password': process.env.RDS_PASSWORD || 'pass',
     'db.port': process.env.RDS_PORT || 3306,
-    'db.db_name': process.env.RDS_DB_NAME || 'users'
+    'db.db_name': process.env.RDS_DB_NAME || 'users',
+    'db.connection.max_retries': process.env.CONN_MAX_RETRIES || 3,
+    'db.connection.retry-interval': process.env.CONN_RETRY_INTERVAL || 30000,
     
 };

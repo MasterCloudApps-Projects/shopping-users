@@ -14,20 +14,33 @@ function getSequelize() {
   return sequelize;
 }
 
-function connect() {
+async function connect() {
 
   sequelize = getSequelize();
 
-  return sequelize.authenticate()
-    .then(() => {
-      console.log('Connection has been established successfully');
-      sequelize.sync()
+  let retries = 0;
+  while (retries < config['db.connection.max_retries']) {
+    try {
+      await sequelize.authenticate();
+      console.log('Connection has been established successfully.');
+      return sequelize.sync()
         .then(() => console.log("All models were synchronized successfully."));
-    })
-    .catch((err) => {
-      console.error('Unable to connect to the database:', err);
-    });
+    } catch (error) {
+      retries++;
+      console.error('Unable to connect to the database:', error);
+      if (retries == config['db.connection.max_retries']) {
+        console.error('Max retries reached: ', config['db.connection.max_retries']);
+        throw err;
+      }
+      console.error(`Waiting ${config['db.connection.retry-interval']} milliseconds to retry connection`);
+      await timeout(config['db.connection.retry-interval']);
+    }
+  }
 
+}
+
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function disconnect() {

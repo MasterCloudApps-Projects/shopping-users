@@ -10,8 +10,11 @@ database.connect()
             key: fs.readFileSync(config['server.key.path']),
             cert: fs.readFileSync(config['server.cert.path'])
         }, app).listen(config['server.port'], () => {
-            console.log("Https server started in port",config['server.port']);
+            console.log("Https server started in port", config['server.port']);
         });
+    })
+    .catch((err) => {
+        console.error('Error connecting to database.');
     });
 
 
