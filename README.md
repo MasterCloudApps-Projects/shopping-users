@@ -36,3 +36,9 @@ To run application in local:
     ```
     npm run dev
     ```
+
+## Run tests
+To run tests:
+```
+npm run test
+```

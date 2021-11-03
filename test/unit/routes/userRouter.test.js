@@ -10,10 +10,12 @@ jest.mock('../../../src/services/userService.js');
 
 describe('userRouter POST /api/v1/users tests', () => {
 
+    const POST_URL = '/api/v1/users';
+
     test('Given a request with invalid body When post Then should return bad request response', () => {
 
         return request
-            .post('/api/v1/users')
+            .post(POST_URL)
             .send({
                 username: "invalidUsername",
                 password: "P4ssword"
@@ -31,7 +33,7 @@ describe('userRouter POST /api/v1/users tests', () => {
         userService.create.mockResolvedValue(null);
 
         return request
-            .post('/api/v1/users')
+            .post(POST_URL)
             .send({
                 username: "user@email.com",
                 password: "P4ssword"
@@ -53,7 +55,7 @@ describe('userRouter POST /api/v1/users tests', () => {
         });
 
         return request
-            .post('/api/v1/users')
+            .post(POST_URL)
             .send({
                 username: "user@email.com",
                 password: "P4ssword"
@@ -78,7 +80,7 @@ describe('userRouter POST /api/v1/users tests', () => {
         userService.create.mockResolvedValue(new UserResponseDto(user.id, user.username, user.balance));
 
         return request
-            .post('/api/v1/users')
+            .post(POST_URL)
             .send({
                 username: "user@email.com",
                 password: "P4ssword"
