@@ -1,15 +1,15 @@
-const User = require('../models/user.js');
+const User = require('../models/user');
 
 function findByUsername(userName) {
-    return User.findOne({ where: { username: userName } });
+  return User.findOne({ where: { username: userName } });
 }
 
 function save(user) {
-    return User.create({
-        username: user.username,
-        password: user.password,
-        balance: user.balance
-    });
+  return User.create({
+    username: user.username,
+    password: user.password,
+    balance: user.balance,
+  });
 }
 
-module.exports = { findByUsername, save }
+module.exports = { findByUsername, save };
