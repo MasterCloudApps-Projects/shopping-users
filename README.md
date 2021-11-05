@@ -17,7 +17,10 @@ To implement this service next technologies are used:
    * sequelize
 * MySQL database
 
-## Run application
+## CI
+In order to ensure the right style and code conventions, and that code to commit and push is ok, a [husky](https://typicode.github.io/husky/#/) pre-commit hook is used. This hook run eslint and test, ann if fails, changes can't be commited.
+## Usage
+### Run application
 To run application in local:
 1. Up database:
    ```
@@ -37,7 +40,7 @@ To run application in local:
     npm run dev
     ```
 
-## Run tests
+### Run tests
 To run tests:
 ```
 npm run test
