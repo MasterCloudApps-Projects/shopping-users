@@ -4,8 +4,8 @@
     "scripts": {
         "start": "node src/server",
         "dev": "nodemon src/server",
+        "pretest": "eslint --cache .  --ext .js",
         "test": "jest",
-        "lint": "eslint --cache .  --ext .js",
         "lint-fix": "eslint --fix .  --ext .js"
     },
     "dependencies": {
