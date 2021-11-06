@@ -41,7 +41,15 @@ To run application in local:
     ```
 
 ### Run tests
-To run tests:
-```
-npm run test
-```
+* Unit tests:
+  ```
+  npm run unit:test
+  ```
+* Integration tests:
+  ```
+  npm run it:test
+  ```
+* All tests:
+  ```
+  npm test
+  ```
