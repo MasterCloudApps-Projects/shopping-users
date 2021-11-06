@@ -7,6 +7,8 @@
         "dev": "nodemon src/server",
         "pretest": "eslint --cache .  --ext .js",
         "test": "jest",
+        "unit:test": "jest -c tests/unit/jest.config.unit.js",
+        "it:test": "jest tests/integration",
         "lint-fix": "eslint --fix .  --ext .js"
     },
     "dependencies": {
@@ -16,6 +18,7 @@
         "sequelize": "^6.8.0"
     },
     "devDependencies": {
+        "@trendyol/jest-testcontainers": "^2.1.0",
         "eslint": "^7.32.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-plugin-import": "^2.25.2",
