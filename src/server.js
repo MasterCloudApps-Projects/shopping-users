@@ -13,8 +13,8 @@ database.connect()
       console.log('Https server started in port', config['server.port']);
     });
   })
-  .catch(() => {
-    console.error('Error connecting to database.');
+  .catch((error) => {
+    console.error('Error starting app:', error);
   });
 
 process.on('SIGINT', () => {

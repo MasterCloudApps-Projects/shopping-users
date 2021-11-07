@@ -1,7 +1,7 @@
 module.exports = {
   'server.port': process.env.SERVER_PORT || 8443,
-  'server.key.path': process.env.KEY_PATH || 'server.key',
-  'server.cert.path': process.env.CERT_PATH || 'server.cert',
+  'server.key.path': process.env.KEY_PATH || './certs/private-key.pem',
+  'server.cert.path': process.env.CERT_PATH || './certs/cert.pem',
 
   'db.host': process.env.RDS_HOSTNAME || 'localhost',
   'db.user': process.env.RDS_USERNAME || 'root',

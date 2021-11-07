@@ -5,7 +5,7 @@ services:
     ports:
       - 8443:8443
     environment:
-      # Enviroment variables for connect to MySQL
+      # Environment variables for connect to MySQL
       - RDS_HOSTNAME=mysql
       - RDS_DB_NAME=users
       - RDS_USERNAME=root
