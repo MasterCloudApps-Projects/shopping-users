@@ -1,0 +1,42 @@
+name: Users CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  eslint:
+    name:  Analyze source code 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install
+        run: npm ci
+      - name: Run eslint on changed files
+        uses: tj-actions/eslint-changed-files@v8
+        with:
+          config_path: ".eslintrc"
+          extensions: "js"
+          extra_args: "--max-warnings=0"
+  tests:
+    name:  Run unitary and integration tests 
+    runs-on: ubuntu-latest
+    needs: [ eslint ]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install
+        run: npm ci
+      - name: Run tests
+        run: npm test
