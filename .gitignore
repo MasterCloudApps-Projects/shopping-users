@@ -108,3 +108,6 @@ dist
 
 # IntelliJ
 .idea
+
+# MySQL container volume
+mysql_db
