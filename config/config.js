@@ -1,5 +1,5 @@
 module.exports = {
-  'server.port': 8443,
+  'server.port': process.env.SERVER_PORT || 8443,
   'server.key.path': process.env.KEY_PATH || 'server.key',
   'server.cert.path': process.env.CERT_PATH || 'server.cert',
 
