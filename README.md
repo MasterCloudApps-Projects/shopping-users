@@ -21,10 +21,12 @@ To implement this service next technologies are used:
 In order to ensure the right style and code conventions, and that code to commit and push is ok, a [husky](https://typicode.github.io/husky/#/) pre-commit hook is used. This hook run eslint and test, ann if fails, changes can't be commited.
 ## Usage
 ### Run application
-To run application in local:
-1. Up database:
+
+#### Development mode
+To run application in local for development purposes:
+1. Up necessary services:
    ```
-   docker run --rm -p 3306:3306 --name mysql-db -e MYSQL_ROOT_PASSWORD=pass -e MYSQL_DATABASE=users -e -d mysql:latest
+   docker-compose -f docker-compose-dev.yml up
    ```
 2. Install dependencies:
     ```
@@ -35,10 +37,16 @@ To run application in local:
    npm start
    ```
    
-   Note: To run in development mode run next command instead of previous one:
+   **Note:** To automatically restart app when some changes are made, then run next command instead of previous one:
     ```
     npm run dev
     ```
+
+#### Deploy
+To deploy application in containers execute:
+```bash
+docker-compose up
+```
 
 ### Run tests
 * Unit tests:
