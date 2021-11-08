@@ -10,8 +10,7 @@ ENV NODE_ENV production
 WORKDIR /usr/src/app
 
 # We copy the application files
-COPY server.key /usr/src/app/
-COPY server.cert /usr/src/app/
+COPY certs /usr/src/app/certs/
 COPY config /usr/src/app/config/
 COPY src /usr/src/app/src/
 COPY package.json /usr/src/app/
