@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   users:
-    image: amartinm82/tfm-users:latest
+    image: "${DOCKER_LOCAL_IMAGE}"
     ports:
       - 8443:8443
     environment:

@@ -1,22 +1,13 @@
 #!/usr/bin/env bash
 
-if [ -z "$1" ]
-  then
-    echo "No version supplied"
-    exit 1
-fi
+echo "${DOCKER_LOCAL_IMAGE}">".env"
 
-if [[ -z "${DOCKERHUB_NAME}" ]]; then
-  echo "DOCKERHUB_NAME environment variable is not defined"
-  exit 1
-fi
+# Compile image to work locally
+printf "\n==> Compile app image for locally purposes with name '%s', using Dockerfile\n" ${DOCKER_LOCAL_IMAGE}
+docker build -t ${DOCKER_LOCAL_IMAGE} .
 
-DOCKERHUB_NAME="${DOCKERHUB_NAME}"
-SERVER_IMAGE_NAME="${DOCKERHUB_NAME}/tfm-users"
-
-# Compile and publish Server
-printf "\n==> Compile and public app image with name '%s', using Dockerfile\n" ${SERVER_IMAGE_NAME}
-docker build -t "${SERVER_IMAGE_NAME}:"$1 -t "${SERVER_IMAGE_NAME}:latest" .
-docker push --all-tags ${SERVER_IMAGE_NAME}
+# Start locally created container
+printf "\n==> Start locally container and its dependencies using docker-compose\n"
+docker-compose up
 
 exit 0

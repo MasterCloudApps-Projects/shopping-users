@@ -10,7 +10,7 @@
         "unit:test": "jest -c tests/unit/jest.config.unit.js",
         "it:test": "jest tests/integration",
         "lint-fix": "eslint --fix .  --ext .js",
-        "dockerize": "./dockerize.sh $npm_package_version"
+        "dockerize": "DOCKER_LOCAL_IMAGE=${USER}/tfm-users:$npm_package_version-dev ./dockerize.sh"
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
