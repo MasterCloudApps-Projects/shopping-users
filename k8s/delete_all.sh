@@ -12,6 +12,10 @@ kubectl delete -f users-api.yml
 printf "\n==> Deleting MySQL deployment and service\n"
 kubectl delete -f mysql.yml
 
+# delete secrets
+printf "\n==> Deleting secrets\n"
+kubectl delete -f secrets.yml
+
 # delete namespace
 printf "\n==> Deleting DEV namespace\n"
 kubectl delete namespace tfm-dev-amartinm82

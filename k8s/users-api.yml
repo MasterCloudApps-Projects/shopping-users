@@ -37,7 +37,10 @@ spec:
         - name: RDS_USERNAME
           value: root
         - name: RDS_PASSWORD
-          value: password
+          valueFrom:
+            secretKeyRef:
+              name: users-secrets
+              key: mysqlpass
         - name: RDS_PORT
           value: '3306'
         - name: SERVER_PORT
