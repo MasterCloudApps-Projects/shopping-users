@@ -9,7 +9,7 @@ printf "\n==> Creating secrets\n"
 kubectl apply -f secrets.yml
 
 # start mysql container
-printf "\n==> Starting MySQL deployment and service\n"
+printf "\n==> Starting MySQL deployment, service and persistent volume claim\n"
 kubectl apply -f mysql.yml
 
 # start users container

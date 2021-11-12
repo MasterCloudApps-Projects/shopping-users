@@ -9,7 +9,7 @@ printf "\n==> Deleting Users API deployment and service\n"
 kubectl delete -f users-api.yml
 
 # delete mysql container
-printf "\n==> Deleting MySQL deployment and service\n"
+printf "\n==> Deleting MySQL deployment, service and persistent volume claim\n"
 kubectl delete -f mysql.yml
 
 # delete secrets
