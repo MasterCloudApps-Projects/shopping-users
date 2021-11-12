@@ -40,8 +40,8 @@ async function connect() {
       await timeout(config['db.connection.retry-interval']);
     }
   }
-  return sequelize.sync()
-    .then(() => console.log('All models were synchronized successfully.'));
+  await sequelize.sync();
+  console.log('All models were synchronized successfully.');
 }
 /* eslint-enable no-await-in-loop */
 
