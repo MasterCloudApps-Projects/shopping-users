@@ -1,0 +1,20 @@
+{{ if .Values.mysql.create }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mysql.service" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "mysql.name" . }}
+    release: {{ .Release.Name }}
+spec:
+  ports:
+    - port: {{ .Values.mysql.port }}
+      targetPort: {{ .Values.mysql.port }}
+      protocol: TCP
+      name: {{ include "mysql.port" . }}
+  selector:
+    app: {{ include "mysql.name" . }}
+    release: {{ .Release.Name }}
+  type: ClusterIP
+{{ end }}

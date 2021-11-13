@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "users.deploy" . }}
+  namespace: {{ .Values.namespace }}
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ include "users.name" . }}
+      release: {{ .Release.Name }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "users.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      restartPolicy: Always
+      securityContext:
+        runAsUser: {{ .Values.securityContext.runAsUser }}
+      containers:
+      - name: {{ include "users.name" . }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        resources:
+          requests:
+            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu }}
+          limits:
+            memory: {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu }}
+        env:
+        - name: RDS_HOSTNAME
+          value: {{ include "mysql.service" . }}
+        - name: RDS_DB_NAME
+          value: {{ .Values.mysql.database }} 
+        - name: RDS_USERNAME
+          value: {{ .Values.mysql.user }}
+        - name: RDS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "user.secrets" . }}
+              key: mysqlpass
+        - name: RDS_PORT
+          value: '{{ .Values.mysql.port }}'
+        - name: SERVER_PORT
+          value: '{{ .Values.service.port }}'
+        ports:
+        - containerPort: {{ .Values.service.port }}

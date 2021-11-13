@@ -1,0 +1,52 @@
+{{ if .Values.mysql.create }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mysql.deploy" . }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ include "mysql.name" . }}
+    release: {{ .Release.Name }}
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ include "mysql.name" . }}
+      release: {{ .Release.Name }}
+  replicas: {{.Values.mysql.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "mysql.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: mysql
+        image: {{.Values.mysql.image.repository }}:{{.Values.mysql.image.tag }}
+        resources:
+          requests:
+            memory: {{.Values.mysql.resources.requests.memory }}
+            cpu: {{.Values.mysql.resources.requests.cpu }}
+          limits:
+            memory: {{.Values.mysql.resources.limits.memory }}
+            cpu: {{.Values.mysql.resources.limits.cpu }}
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ include "user.secrets" . }}
+              key: mysqlpass
+        - name: MYSQL_DATABASE
+          value: {{ .Values.mysql.database }}
+        ports:
+        - containerPort: {{ .Values.mysql.port }}
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: datadb
+      volumes:
+      - name: datadb
+        persistentVolumeClaim:
+          claimName: {{ include "mysql.pvc" . }}
+{{ end }}
+
