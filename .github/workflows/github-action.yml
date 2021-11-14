@@ -62,4 +62,26 @@ jobs:
           push: true
           context: .
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TRUNK_TAG }}
-
+  deploy:
+    needs: [ publish-image ]
+    name: Deploy in k8s
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        ref: 'main'
+    - name: 'Deploy'
+      uses: 'deliverybot/helm@v1'
+      with:
+        release: 'develop'
+        track: canary
+        namespace: 'tfm-dev-amartinm82'
+        chart: './helm/charts'
+        values: |
+          mysql:
+            create: true
+          image:
+            tag: trunk
+        helm: helm3
+      env:
+        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
