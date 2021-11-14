@@ -11,4 +11,6 @@ module.exports = {
   'db.connection.max_retries': process.env.CONN_MAX_RETRIES || 3,
   'db.connection.retry-interval': process.env.CONN_RETRY_INTERVAL || 30000,
 
+  'token.expiration': process.env.TOKEN_EXPIRATION || 300,
+
 };
