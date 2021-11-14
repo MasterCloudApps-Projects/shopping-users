@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const userRepository = require('../repositories/userRepository');
 const UserResponseDto = require('../dtos/userResponseDto');
+const UserResponseWithPasswordDto = require('../dtos/userResponseWithPasswordDto');
 
 function create(user) {
   return userRepository.findByUsername(user.username)
@@ -25,4 +26,20 @@ function create(user) {
     });
 }
 
-module.exports = { create };
+function getUserByUsername(userName) {
+  return userRepository.findByUsername(userName)
+    .then((foundUser) => {
+      if (foundUser === null) {
+        console.log('Not found user with username', userName);
+        return foundUser;
+      }
+      console.log('Found user with username', userName, foundUser);
+      return new UserResponseWithPasswordDto(foundUser.id, foundUser.username, foundUser.password);
+    })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+}
+
+module.exports = { create, getUserByUsername };
