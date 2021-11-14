@@ -37,7 +37,7 @@ MySQL
 {{- end }}
 
 {{- define "mysql.pvc" -}}
-{{- printf "%s-%s-%s" .Release.Name "mysql" "pvc" | replace "+" "_" | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-%s-%s" .Values.namespace "mysql" "pvc" | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{- define "mysql.port" -}}
