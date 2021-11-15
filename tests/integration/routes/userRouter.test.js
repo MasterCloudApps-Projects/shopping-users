@@ -7,7 +7,7 @@ const database = require('../../../src/database');
 
 const request = supertest(app);
 
-describe('testcontainers example suite', () => {
+describe('userRouter POST /api/v1/users tests', () => {
   const POST_URL = '/api/v1/users';
 
   beforeAll(async () => {

@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
     if (!passwordIsValid) {
       return res.status(401).send({ error: INVALID_CREDENTIALS_MSG });
     }
-    const token = jwt.sign({ id: userWithPasswordDto.id }, config.secret, {
+    const token = jwt.sign({ id: userWithPasswordDto.id, role: 'USER_ROLE' }, config.secret, {
       expiresIn: config['token.expiration'],
     });
     return res.status(200).json({ token: `${token}` });
