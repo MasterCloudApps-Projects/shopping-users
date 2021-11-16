@@ -118,6 +118,8 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/NotAllowedError'
         '404':
           description: User not found.
           content:
@@ -170,6 +172,8 @@ paths:
           $ref: '#/components/responses/BadRequestError'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/NotAllowedError'
         '404':
           description: User not found.
           content:
@@ -199,6 +203,14 @@ components:
             $ref: '#/components/schemas/Error'
           example:
             error: Access token is missing or invalid.
+    NotAllowedError:
+      description: Logged user doesn't have permission to access the resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: You don't have permissions to access this resource.
     BadRequestError:
       description: Bad request.
       content:
