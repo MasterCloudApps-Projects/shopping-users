@@ -94,3 +94,41 @@ describe('userService getByUsername function tests', () => {
     expect(error).toHaveProperty('message', errorMessage);
   });
 });
+
+describe('userService getById function tests', () => {
+  test('Given an not existing id When call getUserById Then should return null', () => {
+    userRepository.findById.mockResolvedValue(null);
+
+    return userService.getUserById(user.id)
+      .then((foundUser) => {
+        expect(userRepository.findById.mock.calls[0][0]).toBe(user.id);
+        expect(foundUser).toBeNull();
+      });
+  });
+
+  test('Given an existing id When call getUserById Then should return user', () => {
+    userRepository.findById.mockResolvedValue(user);
+
+    return userService.getUserById(user.id)
+      .then((foundUser) => {
+        expect(userRepository.findById.mock.calls[0][0]).toBe(user.id);
+        expect(foundUser).toEqual(
+          new UserResponseDto(user.id, user.username, user.balance),
+        );
+      });
+  });
+
+  test('Given an existing id When call getUserById and repository throws error Then should throw error', async () => {
+    userRepository.findById.mockResolvedValue(null);
+
+    const errorMessage = 'Database connection lost.';
+    userRepository.findById.mockImplementation(() => {
+      throw new Error(errorMessage);
+    });
+
+    const error = await getError(async () => userService.getUserById(user.id));
+
+    expect(error).not.toBeInstanceOf(NoErrorThrownError);
+    expect(error).toHaveProperty('message', errorMessage);
+  });
+});

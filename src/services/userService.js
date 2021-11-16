@@ -42,4 +42,20 @@ function getUserByUsername(userName) {
     });
 }
 
-module.exports = { create, getUserByUsername };
+function getUserById(id) {
+  return userRepository.findById(id)
+    .then((foundUser) => {
+      if (foundUser === null) {
+        console.log('Not found user with id', id);
+        return foundUser;
+      }
+      console.log('Found user with id', id, foundUser);
+      return new UserResponseDto(foundUser.id, foundUser.username, foundUser.balance);
+    })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+}
+
+module.exports = { create, getUserByUsername, getUserById };
