@@ -12,4 +12,8 @@ function save(user) {
   });
 }
 
-module.exports = { findByUsername, save };
+function findById(id) {
+  return User.findById(id);
+}
+
+module.exports = { findByUsername, save, findById };
