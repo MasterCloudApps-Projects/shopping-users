@@ -2,10 +2,12 @@ const supertest = require('supertest');
 const app = require('../../../src/app');
 const userService = require('../../../src/services/userService');
 const UserResponseDto = require('../../../src/dtos/userResponseDto');
+const verifyToken = require('../../../src/middlewares/authMiddleware');
 
 const request = supertest(app);
 
 jest.mock('../../../src/services/userService.js');
+jest.mock('../../../src/middlewares/authMiddleware');
 
 describe('userRouter POST /api/v1/users tests', () => {
   const POST_URL = '/api/v1/users';
@@ -83,6 +85,70 @@ describe('userRouter POST /api/v1/users tests', () => {
       .then((response) => {
         expect(response.headers['Location'.toLowerCase()]).toBe(`${response.request.url}/${user.id}`);
         expect(response.body.id).toBe(user.id);
+      });
+  });
+});
+
+describe('userRouter GET /api/v1/users/:id tests', () => {
+  const GET_URL = '/api/v1/users/';
+  const USER_ID = 1;
+
+  verifyToken.mockImplementation((req, res, next) => {
+    req.userId = USER_ID;
+    return next();
+  });
+
+  test('Given a param id different of authorized userId with invalid When get Then should return forbidden response', () => request
+    .get(GET_URL + 0)
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .expect('Content-Type', /json/)
+    .expect(403)
+    .then((response) => {
+      expect(response.body.error).toBe('You don\'t have permission to access the resource');
+    }));
+
+  test('Given a not existing id When get Then should return not found response', () => {
+    userService.getUserById.mockResolvedValue(null);
+
+    return request
+      .get(GET_URL + USER_ID)
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .expect('Content-Type', /json/)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe('User not found');
+      });
+  });
+
+  test('Given a existing id When get Then should return user', () => {
+    const userResponseDto = new UserResponseDto(USER_ID, 'username@mail.com', 12.56);
+    userService.getUserById.mockResolvedValue(userResponseDto);
+
+    return request
+      .get(GET_URL + USER_ID)
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.id).toBe(userResponseDto.id);
+        expect(response.body.username).toBe(userResponseDto.username);
+        expect(response.body.balance).toBe(userResponseDto.balance);
+      });
+  });
+
+  test('a existing id When get and userService throws error Then should return internal server error response', () => {
+    const errorMessage = 'Database connection lost.';
+    userService.getUserById.mockImplementation(() => {
+      throw new Error(errorMessage);
+    });
+
+    return request
+      .get(GET_URL + USER_ID)
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .expect('Content-Type', /json/)
+      .expect(500)
+      .then((response) => {
+        expect(response.body.error).toBe(errorMessage);
       });
   });
 });
