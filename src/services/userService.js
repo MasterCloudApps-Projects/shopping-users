@@ -10,7 +10,7 @@ function create(user) {
         console.log(`Username ${user.username} already exists`);
         return null;
       }
-      return userRepository.save({
+      return userRepository.create({
         username: user.username,
         password: user.password ? bcrypt.hashSync(user.password, 8) : user.password,
         balance: 0.0,

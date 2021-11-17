@@ -32,7 +32,7 @@ describe('userService create function tests', () => {
   test('Given an not existing username When call create Then should save user and return it', () => {
     userRepository.findByUsername.mockResolvedValue(null);
     bcrypt.hashSync.mockResolvedValue(user.password);
-    userRepository.save.mockResolvedValue(user);
+    userRepository.create.mockResolvedValue(user);
 
     return userService.create(userDto)
       .then((createdUser) => {
@@ -46,7 +46,7 @@ describe('userService create function tests', () => {
     userRepository.findByUsername.mockResolvedValue(null);
 
     const errorMessage = 'Database connection lost.';
-    userRepository.save.mockImplementation(() => {
+    userRepository.create.mockImplementation(() => {
       throw new Error(errorMessage);
     });
 

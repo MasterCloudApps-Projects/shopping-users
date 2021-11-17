@@ -4,7 +4,7 @@ function findByUsername(userName) {
   return User.findOne({ where: { username: userName } });
 }
 
-function save(user) {
+function create(user) {
   return User.create({
     username: user.username,
     password: user.password,
@@ -16,4 +16,4 @@ function findById(id) {
   return User.findByPk(id);
 }
 
-module.exports = { findByUsername, save, findById };
+module.exports = { findByUsername, create, findById };
