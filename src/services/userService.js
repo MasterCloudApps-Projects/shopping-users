@@ -42,7 +42,7 @@ function getUserByUsername(userName) {
     });
 }
 
-function getUserById(id) {
+function findUserById(id) {
   return userRepository.findById(id)
     .then((foundUser) => {
       if (foundUser === null) {
@@ -50,7 +50,7 @@ function getUserById(id) {
         return foundUser;
       }
       console.log('Found user with id', id, foundUser);
-      return new UserResponseDto(foundUser.id, foundUser.username, foundUser.balance);
+      return foundUser;
     })
     .catch((error) => {
       console.log(error);
@@ -58,4 +58,31 @@ function getUserById(id) {
     });
 }
 
-module.exports = { create, getUserByUsername, getUserById };
+function getUserById(id) {
+  return findUserById(id)
+    .then((foundUser) => {
+      if (foundUser === null) {
+        return foundUser;
+      }
+      return new UserResponseDto(foundUser.id, foundUser.username, foundUser.balance);
+    });
+}
+
+function addBalance(userId, addBalanceRequestDto) {
+  return findUserById(userId)
+    .then((foundUser) => {
+      if (foundUser === null) {
+        return foundUser;
+      }
+      const userToUpdate = foundUser;
+      userToUpdate.balance += addBalanceRequestDto.amount;
+      return userRepository.save(userToUpdate)
+        .then((updatedUser) => new UserResponseDto(
+          updatedUser.id, updatedUser.username, updatedUser.balance,
+        ));
+    });
+}
+
+module.exports = {
+  create, getUserByUsername, getUserById, addBalance,
+};
