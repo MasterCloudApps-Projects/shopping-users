@@ -16,4 +16,10 @@ function findById(id) {
   return User.findByPk(id);
 }
 
-module.exports = { findByUsername, create, findById };
+function save(user) {
+  return user.save();
+}
+
+module.exports = {
+  findByUsername, create, findById, save,
+};
