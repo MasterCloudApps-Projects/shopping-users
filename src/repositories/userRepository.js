@@ -13,7 +13,7 @@ function save(user) {
 }
 
 function findById(id) {
-  return User.findById(id);
+  return User.findByPk(id);
 }
 
 module.exports = { findByUsername, save, findById };

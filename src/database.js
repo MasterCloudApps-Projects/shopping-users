@@ -9,6 +9,9 @@ function getSequelize() {
       host: config['db.host'],
       port: config['db.port'],
       dialect: 'mysql',
+      dialectOptions: {
+        decimalNumbers: true,
+      },
     });
   }
   return sequelize;
