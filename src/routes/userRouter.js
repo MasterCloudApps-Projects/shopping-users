@@ -8,16 +8,16 @@ const AddBalanceRequestDto = require('../dtos/addBalanceRequestDto');
 const verifyPathIdWithAuthenticatedUser = require('../middlewares/userAllowedResource');
 
 router.post('/', async (req, res) => {
-  let userDto;
+  let userRequestDto;
   try {
-    userDto = new UserRequestDto(req.body.username, req.body.password);
+    userRequestDto = new UserRequestDto(req.body);
   } catch (error) {
     console.log(error);
     return res.status(400).send({ error: error.message });
   }
 
   try {
-    const createdUser = await userService.create(userDto);
+    const createdUser = await userService.create(userRequestDto);
     if (!createdUser) {
       return res.status(409).send({ error: 'Already exists a user with that username' });
     }
@@ -50,7 +50,7 @@ router.post('/:id/balance', verifyToken, verifyPathIdWithAuthenticatedUser, asyn
 
   let addBalanceRequestDto;
   try {
-    addBalanceRequestDto = new AddBalanceRequestDto(req.body.amount);
+    addBalanceRequestDto = new AddBalanceRequestDto(req.body);
   } catch (error) {
     console.log(error);
     return res.status(400).send({ error: error.message });

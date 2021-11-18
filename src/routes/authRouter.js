@@ -11,20 +11,20 @@ const config = require('../../config/config');
 const INVALID_CREDENTIALS_MSG = 'Invalid credentials.';
 
 router.post('/', async (req, res) => {
-  let userDto;
+  let userRequestDto;
   try {
-    userDto = new UserRequestDto(req.body.username, req.body.password);
+    userRequestDto = new UserRequestDto(req.body);
   } catch (error) {
     console.log(error);
     return res.status(400).send({ error: error.message });
   }
 
   try {
-    const userWithPasswordDto = await userService.getUserByUsername(userDto.username);
+    const userWithPasswordDto = await userService.getUserByUsername(userRequestDto.username);
     if (!userWithPasswordDto) {
       return res.status(401).send({ error: INVALID_CREDENTIALS_MSG });
     }
-    const passwordIsValid = bcrypt.compareSync(userDto.password, userWithPasswordDto.password);
+    const passwordIsValid = bcrypt.compareSync(userRequestDto.password, userWithPasswordDto.password);
     if (!passwordIsValid) {
       return res.status(401).send({ error: INVALID_CREDENTIALS_MSG });
     }

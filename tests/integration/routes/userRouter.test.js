@@ -96,7 +96,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
   it('Given an created user authenticated When get Then should return user info', async () => {
     let userId;
     let token;
-    const userRequestDto = new UserRequestDto('user200@email.com', 'P4ssword');
+    const userRequestDto = new UserRequestDto({ username: 'user200@email.com', password: 'P4ssword' });
     await request.post(BASE_URL)
       .send(userRequestDto)
       .set('Accept', 'application/json')
@@ -186,7 +186,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   it('Given an created user authenticated When add balance Then should return user info with balance updated', async () => {
     let userId;
     let token;
-    const userRequestDto = new UserRequestDto('user444@email.com', 'P4ssword');
+    const userRequestDto = new UserRequestDto({ username: 'user444@email.com', password: 'P4ssword' });
     await request.post(BASE_URL)
       .send(userRequestDto)
       .set('Accept', 'application/json')

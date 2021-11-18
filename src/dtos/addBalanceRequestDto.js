@@ -1,5 +1,5 @@
 class AddBalanceRequestDto {
-  constructor(amount) {
+  constructor({ amount }) {
     if (amount <= 0) {
       throw new Error('Amount to add must be greater than 0');
     }

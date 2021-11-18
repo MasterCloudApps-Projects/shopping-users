@@ -1,5 +1,5 @@
 class UserRequestDto {
-  constructor(username, password) {
+  constructor({ username, password }) {
     if (!UserRequestDto.isValidUsername(username)) {
       throw new Error('Username must be a valid email');
     }

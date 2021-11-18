@@ -19,7 +19,7 @@ const user = {
 const errorMessage = 'Database connection lost.';
 
 describe('userService create function tests', () => {
-  const userDto = new UserRequestDto(user.username, 'Password1');
+  const userDto = new UserRequestDto({ username: user.username, password: 'Password1' });
 
   test('Given an existing username When call create Then should not create user and return null', () => {
     userRepository.findByUsername.mockResolvedValue(user);
@@ -133,7 +133,7 @@ describe('userService getById function tests', () => {
 });
 
 describe('userService addBalance function tests', () => {
-  const addBalanceRequestDto = new AddBalanceRequestDto(10.53);
+  const addBalanceRequestDto = new AddBalanceRequestDto({ amount: 10.53 });
   test('Given an not existing id When call addBalance Then should return null', () => {
     userRepository.findById.mockResolvedValue(null);
 
