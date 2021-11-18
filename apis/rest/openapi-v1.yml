@@ -5,10 +5,91 @@ info:
   version: 1.0.0
 servers:
   - url: https://localhost:8443/api/v1
+  - url: https://users-tfm-dev-amartinm82.cloud.okteto.net/api/v1
 paths:
+  /admins/auth:
+    post:
+      description: Authenticate an admin using passed credentials and return a JWT token.
+      tags:
+        - admins
+      operationId: adminAuthentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '200':
+          description: a JSON web token (JWT).
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+                required:
+                  - token
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '401':
+          $ref: '#/components/responses/InvalidCredentialsError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /admins:
+    post:
+      description: Creates an admin and returns the admin ID.
+      tags:
+        - admins
+      operationId: createAdmin
+      requestBody:
+        required: true
+        description: A JSON object that contains the username (email) and password.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+      responses:
+        '201':
+          description: Created admin
+          headers:
+            Location:
+              required: true
+              description: URL to get the newly-created admin.
+              schema:
+                type: string
+                example: https://localhost:8443/v1/admins/1
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID of the created admin.
+                    example: 1
+                required:
+                  - id
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '409':
+          description: Username already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: Username already exists.
+        '500':
+          $ref: '#/components/responses/InternalError'
+
   /auth:
     post:
       description: Authenticate an user using passed credentials and return a JWT token.
+      tags:
+        - users
       operationId: authentication
       requestBody:
         required: true
@@ -38,6 +119,8 @@ paths:
   /users:
     post:
       description: Creates a user and returns the user ID.
+      tags:
+        - users
       operationId: createUser
       requestBody:
         required: true
@@ -98,6 +181,8 @@ paths:
   /users/{userId}:  
     get:
       description: Get user info by ID.
+      tags:
+        - users
       operationId: getUserById
       parameters:
         - in: path
@@ -134,6 +219,8 @@ paths:
   /users/{userId}/balance:  
     post:
       description: Add balance to user.
+      tags:
+        - users
       operationId: addBalance
       parameters:
         - in: path
