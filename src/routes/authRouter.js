@@ -24,7 +24,9 @@ router.post('/', async (req, res) => {
     if (!userWithPasswordDto) {
       return res.status(401).send({ error: INVALID_CREDENTIALS_MSG });
     }
-    const passwordIsValid = bcrypt.compareSync(userRequestDto.password, userWithPasswordDto.password);
+    const passwordIsValid = bcrypt.compareSync(
+      userRequestDto.password, userWithPasswordDto.password,
+    );
     if (!passwordIsValid) {
       return res.status(401).send({ error: INVALID_CREDENTIALS_MSG });
     }
