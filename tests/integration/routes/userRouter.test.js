@@ -122,3 +122,94 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
       });
   });
 });
+
+describe('userRouter POST /api/v1/users/:id/balance tests', () => {
+  const BALANCE_SUFFIX = '/balance';
+
+  it('Given a request without authorization header When add balance to a user Then should return an unauthorized error', async () => request
+    .post(`${BASE_URL}/${0}${BALANCE_SUFFIX}`)
+    .send({ amount: 0.01 })
+    .expect(401)
+    .then((response) => {
+      expect(response.body.error).toBe('No token provided.');
+    }));
+
+  it('Given a request with invalid token When add balance to a user Then should return a forbidden error', async () => request
+    .post(`${BASE_URL}/${0}${BALANCE_SUFFIX}`)
+    .send({ amount: 0.01 })
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .expect(403)
+    .then((response) => {
+      expect(response.body.error).toBe('Invalid or expired token.');
+    }));
+
+  it('Given an authenticated user When try to add balance to other user Then should return a forbidden error', async () => {
+    let firstUserId;
+    let token;
+    await request.post(BASE_URL)
+      .send({
+        username: 'user333@email.com',
+        password: 'P4ssword',
+      })
+      .set('Accept', 'application/json')
+      .expect(201)
+      .then((response) => {
+        firstUserId = response.body.id;
+      });
+    await request.post(BASE_URL)
+      .send({
+        username: 'user334@email.com',
+        password: 'P4ssword',
+      })
+      .set('Accept', 'application/json')
+      .expect(201);
+    await request.post(AUTH_URL)
+      .send({
+        username: 'user334@email.com',
+        password: 'P4ssword',
+      })
+      .set('Accept', 'application/json')
+      .expect(200)
+      .then((response) => {
+        token = response.body.token;
+      });
+    return request
+      .post(`${BASE_URL}/${firstUserId}${BALANCE_SUFFIX}`)
+      .send({ amount: 0.01 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(403)
+      .then((response) => {
+        expect(response.body.error).toBe('You don\'t have permission to access the resource');
+      });
+  });
+
+  it('Given an created user authenticated When add balance Then should return user info with balance updated', async () => {
+    let userId;
+    let token;
+    const userRequestDto = new UserRequestDto('user444@email.com', 'P4ssword');
+    await request.post(BASE_URL)
+      .send(userRequestDto)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .then((response) => {
+        userId = response.body.id;
+      });
+    await request.post(AUTH_URL)
+      .send(userRequestDto)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .then((response) => {
+        token = response.body.token;
+      });
+    return request
+      .post(`${BASE_URL}/${userId}${BALANCE_SUFFIX}`)
+      .send({ amount: 0.01 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.id).toBe(userId);
+        expect(response.body.username).toBe(userRequestDto.username);
+        expect(response.body.balance).toBe(0.01);
+      });
+  });
+});

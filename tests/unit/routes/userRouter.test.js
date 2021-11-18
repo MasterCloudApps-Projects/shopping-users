@@ -136,7 +136,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
       });
   });
 
-  test('a existing id When get and userService throws error Then should return internal server error response', () => {
+  test('Given a existing id When get and userService throws error Then should return internal server error response', () => {
     const errorMessage = 'Database connection lost.';
     userService.getUserById.mockImplementation(() => {
       throw new Error(errorMessage);
@@ -144,6 +144,78 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
     return request
       .get(GET_URL + USER_ID)
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .expect('Content-Type', /json/)
+      .expect(500)
+      .then((response) => {
+        expect(response.body.error).toBe(errorMessage);
+      });
+  });
+});
+
+describe('userRouter POST /api/v1/users/:id/balance tests', () => {
+  const BASE_URL = '/api/v1/users/';
+  const USER_ID = 1;
+  const BALANCE_SUFFIX = '/balance';
+
+  test('Given a request with amount less than 0 When add balance Then should return bad request response', () => request
+    .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+    .send({ amount: -0.01 })
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .expect('Content-Type', /json/)
+    .expect(400)
+    .then((response) => {
+      expect(response.body.error).toBe('Amount to add must be greater than 0');
+    }));
+
+  test('Given a request with amount equals to 0 When add balance Then should return bad request response', () => request
+    .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+    .send({ amount: 0 })
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .expect('Content-Type', /json/)
+    .expect(400)
+    .then((response) => {
+      expect(response.body.error).toBe('Amount to add must be greater than 0');
+    }));
+
+  test('Given a request with amount greater than 0 When add balance Then should return user with added amount to balance', () => {
+    const userResponseDto = new UserResponseDto(USER_ID, 'username@mail.com', 12.56);
+    userService.addBalance.mockResolvedValue(userResponseDto);
+    return request
+      .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+      .send({ amount: 0.01 })
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .expect('Content-Type', /json/)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.id).toBe(userResponseDto.id);
+        expect(response.body.username).toBe(userResponseDto.username);
+        expect(response.body.balance).toBe(userResponseDto.balance);
+      });
+  });
+
+  test('Given a request with amount greater than 0 When add balance and don\'t find user Then should return not found response', () => {
+    userService.addBalance.mockResolvedValue(null);
+    return request
+      .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+      .send({ amount: 0.01 })
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .expect('Content-Type', /json/)
+      .expect(404)
+      .then((response) => {
+        expect(response.body.error).toBe('User not found');
+      });
+  });
+
+  test('Given a request with amount greater than 0 When add balance and userService throws error Then should return internal server error response', () => {
+    const errorMessage = 'Database connection lost.';
+    userService.addBalance.mockImplementation(() => {
+      throw new Error(errorMessage);
+    });
+
+    return request
+      .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+      .send({ amount: 0.01 })
       .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
       .expect('Content-Type', /json/)
       .expect(500)
