@@ -26,7 +26,7 @@ function create(user) {
     });
 }
 
-function getUserByUsername(userName) {
+function getByUsername(userName) {
   return userRepository.findByUsername(userName)
     .then((foundUser) => {
       if (foundUser === null) {
@@ -42,7 +42,7 @@ function getUserByUsername(userName) {
     });
 }
 
-function findUserById(id) {
+function findById(id) {
   return userRepository.findById(id)
     .then((foundUser) => {
       if (foundUser === null) {
@@ -58,8 +58,8 @@ function findUserById(id) {
     });
 }
 
-function getUserById(id) {
-  return findUserById(id)
+function getById(id) {
+  return findById(id)
     .then((foundUser) => {
       if (foundUser === null) {
         return foundUser;
@@ -69,7 +69,7 @@ function getUserById(id) {
 }
 
 function addBalance(userId, addBalanceRequestDto) {
-  return findUserById(userId)
+  return findById(userId)
     .then((foundUser) => {
       if (foundUser === null) {
         return foundUser;
@@ -84,5 +84,5 @@ function addBalance(userId, addBalanceRequestDto) {
 }
 
 module.exports = {
-  create, getUserByUsername, getUserById, addBalance,
+  create, getByUsername, getById, addBalance,
 };

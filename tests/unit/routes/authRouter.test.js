@@ -29,7 +29,7 @@ describe('authRouter POST /api/v1/auth tests', () => {
     }));
 
   test('Given a request with not existing username When userService return null user Then should return unauthorized response', () => {
-    userService.getUserByUsername.mockResolvedValue(null);
+    userService.getByUsername.mockResolvedValue(null);
 
     return request
       .post(POST_URL)
@@ -53,7 +53,7 @@ describe('authRouter POST /api/v1/auth tests', () => {
       balance: 0.0,
     };
 
-    userService.getUserByUsername.mockResolvedValue(user);
+    userService.getByUsername.mockResolvedValue(user);
     bcrypt.compareSync.mockReturnValue(false);
 
     return request
@@ -78,7 +78,7 @@ describe('authRouter POST /api/v1/auth tests', () => {
       balance: 0.0,
     };
 
-    userService.getUserByUsername.mockResolvedValue(
+    userService.getByUsername.mockResolvedValue(
       new UserResponseWithPasswordDto(user.id, user.username, user.password),
     );
 
@@ -104,7 +104,7 @@ describe('authRouter POST /api/v1/auth tests', () => {
   test('Given a request with valid username and password When userService throws error Then should return internal server error response', () => {
     const errorMessage = 'Database connection lost.';
 
-    userService.getUserByUsername.mockImplementation(() => {
+    userService.getByUsername.mockImplementation(() => {
       throw new Error(errorMessage);
     });
 

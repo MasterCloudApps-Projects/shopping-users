@@ -59,20 +59,20 @@ describe('userService create function tests', () => {
 });
 
 describe('userService getByUsername function tests', () => {
-  test('Given an not existing username When call getUserByUsername Then should return null', () => {
+  test('Given an not existing username When call getByUsername Then should return null', () => {
     userRepository.findByUsername.mockResolvedValue(null);
 
-    return userService.getUserByUsername(user.username)
+    return userService.getByUsername(user.username)
       .then((foundUser) => {
         expect(userRepository.findByUsername.mock.calls[0][0]).toBe(user.username);
         expect(foundUser).toBeNull();
       });
   });
 
-  test('Given an existing username When call getUserByUsername Then should return user with password', () => {
+  test('Given an existing username When call getByUsername Then should return user with password', () => {
     userRepository.findByUsername.mockResolvedValue(user);
 
-    return userService.getUserByUsername(user.username)
+    return userService.getByUsername(user.username)
       .then((foundUser) => {
         expect(userRepository.findByUsername.mock.calls[0][0]).toBe(user.username);
         expect(foundUser).toEqual(
@@ -81,14 +81,14 @@ describe('userService getByUsername function tests', () => {
       });
   });
 
-  test('Given an existing username When call getUserByUsername and repository throws error Then should throw error', async () => {
+  test('Given an existing username When call getByUsername and repository throws error Then should throw error', async () => {
     userRepository.findByUsername.mockResolvedValue(null);
 
     userRepository.findByUsername.mockImplementation(() => {
       throw new Error(errorMessage);
     });
 
-    const error = await getError(async () => userService.getUserByUsername(user.username));
+    const error = await getError(async () => userService.getByUsername(user.username));
 
     expect(error).not.toBeInstanceOf(NoErrorThrownError);
     expect(error).toHaveProperty('message', errorMessage);
@@ -96,20 +96,20 @@ describe('userService getByUsername function tests', () => {
 });
 
 describe('userService getById function tests', () => {
-  test('Given an not existing id When call getUserById Then should return null', () => {
+  test('Given an not existing id When call getById Then should return null', () => {
     userRepository.findById.mockResolvedValue(null);
 
-    return userService.getUserById(user.id)
+    return userService.getById(user.id)
       .then((foundUser) => {
         expect(userRepository.findById.mock.calls[0][0]).toBe(user.id);
         expect(foundUser).toBeNull();
       });
   });
 
-  test('Given an existing id When call getUserById Then should return user', () => {
+  test('Given an existing id When call getById Then should return user', () => {
     userRepository.findById.mockResolvedValue(user);
 
-    return userService.getUserById(user.id)
+    return userService.getById(user.id)
       .then((foundUser) => {
         expect(userRepository.findById.mock.calls[0][0]).toBe(user.id);
         expect(foundUser).toEqual(
@@ -118,14 +118,14 @@ describe('userService getById function tests', () => {
       });
   });
 
-  test('Given an existing id When call getUserById and repository throws error Then should throw error', async () => {
+  test('Given an existing id When call getById and repository throws error Then should throw error', async () => {
     userRepository.findById.mockResolvedValue(null);
 
     userRepository.findById.mockImplementation(() => {
       throw new Error(errorMessage);
     });
 
-    const error = await getError(async () => userService.getUserById(user.id));
+    const error = await getError(async () => userService.getById(user.id));
 
     expect(error).not.toBeInstanceOf(NoErrorThrownError);
     expect(error).toHaveProperty('message', errorMessage);

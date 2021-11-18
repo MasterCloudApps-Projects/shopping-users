@@ -34,7 +34,7 @@ router.get('/:id', verifyToken, verifyPathIdWithAuthenticatedUser, async (req, r
   const { id } = req.params;
 
   try {
-    const user = await userService.getUserById(id);
+    const user = await userService.getById(id);
     if (!user) {
       return res.status(404).send({ error: 'User not found' });
     }

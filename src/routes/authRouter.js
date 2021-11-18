@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    const userWithPasswordDto = await userService.getUserByUsername(userRequestDto.username);
+    const userWithPasswordDto = await userService.getByUsername(userRequestDto.username);
     if (!userWithPasswordDto) {
       return res.status(401).send({ error: INVALID_CREDENTIALS_MSG });
     }

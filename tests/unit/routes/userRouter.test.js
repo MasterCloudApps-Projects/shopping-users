@@ -108,7 +108,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
     }));
 
   test('Given a not existing id When get Then should return not found response', () => {
-    userService.getUserById.mockResolvedValue(null);
+    userService.getById.mockResolvedValue(null);
 
     return request
       .get(GET_URL + USER_ID)
@@ -122,7 +122,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
   test('Given a existing id When get Then should return user', () => {
     const userResponseDto = new UserResponseDto(USER_ID, 'username@mail.com', 12.56);
-    userService.getUserById.mockResolvedValue(userResponseDto);
+    userService.getById.mockResolvedValue(userResponseDto);
 
     return request
       .get(GET_URL + USER_ID)
@@ -138,7 +138,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
   test('Given a existing id When get and userService throws error Then should return internal server error response', () => {
     const errorMessage = 'Database connection lost.';
-    userService.getUserById.mockImplementation(() => {
+    userService.getById.mockImplementation(() => {
       throw new Error(errorMessage);
     });
 
