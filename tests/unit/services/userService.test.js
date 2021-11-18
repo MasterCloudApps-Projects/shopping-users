@@ -19,14 +19,14 @@ const user = {
 const errorMessage = 'Database connection lost.';
 
 describe('userService create function tests', () => {
-  const userDto = new UserRequestDto({ username: user.username, password: 'Password1' });
+  const userRequestDto = new UserRequestDto({ username: user.username, password: 'Password1' });
 
   test('Given an existing username When call create Then should not create user and return null', () => {
     userRepository.findByUsername.mockResolvedValue(user);
 
-    return userService.create(userDto)
+    return userService.create(userRequestDto)
       .then((createdUser) => {
-        expect(userRepository.findByUsername.mock.calls[0][0]).toBe(userDto.username);
+        expect(userRepository.findByUsername.mock.calls[0][0]).toBe(userRequestDto.username);
         expect(createdUser).toBeNull();
       });
   });
@@ -36,10 +36,10 @@ describe('userService create function tests', () => {
     bcrypt.hashSync.mockResolvedValue(user.password);
     userRepository.create.mockResolvedValue(user);
 
-    return userService.create(userDto)
+    return userService.create(userRequestDto)
       .then((createdUser) => {
-        expect(userRepository.findByUsername.mock.calls[0][0]).toBe(userDto.username);
-        expect(bcrypt.hashSync.mock.calls[0][0]).toBe(userDto.password);
+        expect(userRepository.findByUsername.mock.calls[0][0]).toBe(userRequestDto.username);
+        expect(bcrypt.hashSync.mock.calls[0][0]).toBe(userRequestDto.password);
         expect(createdUser).toEqual(new UserResponseDto(user.id, user.username, user.balance));
       });
   });
@@ -51,7 +51,7 @@ describe('userService create function tests', () => {
       throw new Error(errorMessage);
     });
 
-    const error = await getError(async () => userService.create(userDto));
+    const error = await getError(async () => userService.create(userRequestDto));
 
     expect(error).not.toBeInstanceOf(NoErrorThrownError);
     expect(error).toHaveProperty('message', errorMessage);
