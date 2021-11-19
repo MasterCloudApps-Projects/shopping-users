@@ -95,6 +95,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
   verifyToken.mockImplementation((req, res, next) => {
     req.userId = USER_ID;
+    req.role = 'USER_ROLE';
     return next();
   });
 
