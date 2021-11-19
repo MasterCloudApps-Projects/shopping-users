@@ -63,12 +63,16 @@ describe('Authorization middleware tests', () => {
 
   test('Given a request with valid token When verify Then should set userId in request and call next', async () => {
     mockedReq.headers = { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNjk1NzQ5MiwiZXhwIjoxNjM2OTU3NzkyfQ.ieKPvKT2vife4zWLSjNH0DGvEDNCcIZlBvbg1x28u-U' };
+    const USER_ROLE = 'USER_ROLE';
 
-    jwt.verify.mockImplementation((token, secret, callback) => callback(null, { id: 1 }));
+    jwt.verify.mockImplementation((token, secret, callback) => callback(
+      null, { id: 1, role: USER_ROLE },
+    ));
 
     authMiddleware(mockedReq, mockedRes, mockedNext);
 
     expect(mockedReq.userId).toBe(1);
+    expect(mockedReq.role).toBe(USER_ROLE);
     expect(mockedNext).toBeCalledTimes(1);
   });
 });
