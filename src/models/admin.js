@@ -2,7 +2,6 @@ const { DataTypes, Model } = require('sequelize');
 const { getSequelize } = require('../database');
 
 const sequelize = getSequelize();
-const config = require('../../config/config');
 
 class Admin extends Model { }
 
@@ -28,7 +27,7 @@ Admin.init({
 }, {
   sequelize,
   modelName: 'Admin',
-  tableName: config['db.db_name'],
+  tableName: 'admins',
   timestamps: false,
 });
 

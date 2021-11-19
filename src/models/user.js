@@ -2,7 +2,6 @@ const { Sequelize, DataTypes, Model } = require('sequelize');
 const { getSequelize } = require('../database');
 
 const sequelize = getSequelize();
-const config = require('../../config/config');
 
 class User extends Model { }
 
@@ -33,7 +32,7 @@ User.init({
 }, {
   sequelize,
   modelName: 'User',
-  tableName: config['db.db_name'],
+  tableName: 'users',
   timestamps: false,
 });
 
