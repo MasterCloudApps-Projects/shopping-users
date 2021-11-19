@@ -9,6 +9,8 @@ const request = supertest(app);
 jest.mock('../../../src/services/userService.js');
 jest.mock('../../../src/middlewares/authMiddleware');
 
+const BEARER_TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNzM0NTg5OSwiZXhwIjoxNjM3MzQ2MTk5fQ.qnkOMsfHA2YDni_WlgV7yPbEySomqKCkLK8G4t4IeUI';
+
 describe('userRouter POST /api/v1/users tests', () => {
   const POST_URL = '/api/v1/users';
 
@@ -101,7 +103,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
   test('Given an user role with param id different of authorized userId When get Then should return forbidden response', () => request
     .get(GET_URL + 0)
-    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .set('Authorization', BEARER_TOKEN)
     .expect('Content-Type', /json/)
     .expect(403)
     .then((response) => {
@@ -113,7 +115,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
     return request
       .get(GET_URL + USER_ID)
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .set('Authorization', BEARER_TOKEN)
       .expect('Content-Type', /json/)
       .expect(404)
       .then((response) => {
@@ -127,7 +129,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
     return request
       .get(GET_URL + USER_ID)
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .set('Authorization', BEARER_TOKEN)
       .expect('Content-Type', /json/)
       .expect(200)
       .then((response) => {
@@ -145,7 +147,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
     return request
       .get(GET_URL + USER_ID)
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .set('Authorization', BEARER_TOKEN)
       .expect('Content-Type', /json/)
       .expect(500)
       .then((response) => {
@@ -162,7 +164,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   test('Given a request with amount less than 0 When add balance Then should return bad request response', () => request
     .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
     .send({ amount: -0.01 })
-    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .set('Authorization', BEARER_TOKEN)
     .expect('Content-Type', /json/)
     .expect(400)
     .then((response) => {
@@ -172,7 +174,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   test('Given a request with amount equals to 0 When add balance Then should return bad request response', () => request
     .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
     .send({ amount: 0 })
-    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .set('Authorization', BEARER_TOKEN)
     .expect('Content-Type', /json/)
     .expect(400)
     .then((response) => {
@@ -185,7 +187,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
     return request
       .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
       .send({ amount: 0.01 })
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .set('Authorization', BEARER_TOKEN)
       .expect('Content-Type', /json/)
       .expect(200)
       .then((response) => {
@@ -200,7 +202,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
     return request
       .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
       .send({ amount: 0.01 })
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .set('Authorization', BEARER_TOKEN)
       .expect('Content-Type', /json/)
       .expect(404)
       .then((response) => {
@@ -217,7 +219,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
     return request
       .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
       .send({ amount: 0.01 })
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+      .set('Authorization', BEARER_TOKEN)
       .expect('Content-Type', /json/)
       .expect(500)
       .then((response) => {

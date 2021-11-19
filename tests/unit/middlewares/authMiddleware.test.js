@@ -50,7 +50,7 @@ describe('Authorization middleware tests', () => {
   });
 
   test('Given a request with invalid token When verify Then should return forbidden response', async () => {
-    mockedReq.headers = { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNjk1NzQ5MiwiZXhwIjoxNjM2OTU3NzkyfQ.ieKPvKT2vife4zWLSjNH0DGvEDNCcIZlBvbg1x28u-U' };
+    mockedReq.headers = { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNzM0NTg5OSwiZXhwIjoxNjM3MzQ2MTk5fQ.qnkOMsfHA2YDni_WlgV7yPbEySomqKCkLK8G4t4IeUI' };
     const expectedResponse = { error: 'Invalid or expired token.' };
 
     jwt.verify.mockImplementation((token, secret, callback) => callback(new Error('jwt expired'), null));
@@ -62,7 +62,7 @@ describe('Authorization middleware tests', () => {
   });
 
   test('Given a request with valid token When verify Then should set userId in request and call next', async () => {
-    mockedReq.headers = { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNjk1NzQ5MiwiZXhwIjoxNjM2OTU3NzkyfQ.ieKPvKT2vife4zWLSjNH0DGvEDNCcIZlBvbg1x28u-U' };
+    mockedReq.headers = { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNzM0NTg5OSwiZXhwIjoxNjM3MzQ2MTk5fQ.qnkOMsfHA2YDni_WlgV7yPbEySomqKCkLK8G4t4IeUI' };
     const USER_ROLE = 'USER_ROLE';
 
     jwt.verify.mockImplementation((token, secret, callback) => callback(

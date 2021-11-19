@@ -48,7 +48,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 
   it('Given a request with invalid authorization token When get user by id Then should return a forbidden error', async () => request
     .get(`${BASE_URL}/${0}`)
-    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNzM0NTg5OSwiZXhwIjoxNjM3MzQ2MTk5fQ.qnkOMsfHA2YDni_WlgV7yPbEySomqKCkLK8G4t4IeUI')
     .expect(403)
     .then((response) => {
       expect(response.body.error).toBe('Invalid or expired token.');
@@ -137,7 +137,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   it('Given a request with invalid token When add balance to an user Then should return a forbidden error', async () => request
     .post(`${BASE_URL}/${0}${BALANCE_SUFFIX}`)
     .send({ amount: 0.01 })
-    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
+    .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IlVTRVJfUk9MRSIsImlhdCI6MTYzNzM0NTg5OSwiZXhwIjoxNjM3MzQ2MTk5fQ.qnkOMsfHA2YDni_WlgV7yPbEySomqKCkLK8G4t4IeUI')
     .expect(403)
     .then((response) => {
       expect(response.body.error).toBe('Invalid or expired token.');
