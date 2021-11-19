@@ -82,7 +82,7 @@ describe('adminAuthRouter POST /api/v1/admins/auth tests', () => {
 
     bcrypt.compareSync.mockReturnValue(true);
 
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOX1JPTEUiLCJpYXQiOjE2MzcyNjE4ODQsImV4cCI6MTYzNzI2MjE4NH0.M_7yTPeg7lZ5rBtU76xTKZx88uQgaKUhEPu07eWPrpY';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOX1JPTEUiLCJpYXQiOjE2MzczNDY5ODEsImV4cCI6MTYzNzM0NzI4MX0.3s7zdOKbrY2CTMfd4qkQbapLMId-DlQL55Il05wWAFA';
     jwt.sign.mockReturnValue(token);
 
     return request
@@ -95,7 +95,7 @@ describe('adminAuthRouter POST /api/v1/admins/auth tests', () => {
       .expect('Content-Type', /json/)
       .expect(200)
       .then((response) => {
-        expect(response.body.token).toBe('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOX1JPTEUiLCJpYXQiOjE2MzcyNjE4ODQsImV4cCI6MTYzNzI2MjE4NH0.M_7yTPeg7lZ5rBtU76xTKZx88uQgaKUhEPu07eWPrpY');
+        expect(response.body.token).toBe(token);
       });
   });
 
