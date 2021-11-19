@@ -22,7 +22,7 @@ describe('userAuthRouter POST /api/v1/auth tests', () => {
 
   it('Given not existing username When auth Then should return unauthorized', async () => {
     const userRequest = {
-      username: 'user1@email.com',
+      username: 'userToAuth1@email.com',
       password: 'P4ssword',
     };
     return request.post(POST_URL)
@@ -35,7 +35,7 @@ describe('userAuthRouter POST /api/v1/auth tests', () => {
 
   it('Given an user creation When auth with wrong password Then should return unauthorized', async () => {
     const userRequest = {
-      username: 'user2@email.com',
+      username: 'userToAuth2@email.com',
       password: 'P4ssword',
     };
     await request.post(USERS_POST_URL)
@@ -55,7 +55,7 @@ describe('userAuthRouter POST /api/v1/auth tests', () => {
 
   it('Given an user creation When auth with him Then should return token', async () => {
     const userRequest = {
-      username: 'user3@email.com',
+      username: 'userToAuth3@email.com',
       password: 'P4ssword',
     };
     await request.post(USERS_POST_URL)

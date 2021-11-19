@@ -20,7 +20,7 @@ afterAll(() => {
 describe('adminRouter POST /api/v1/admins tests', () => {
   it('Given 2 admins with same username When post admins Then should create first and return an error for the second', async () => {
     const userRequest = {
-      username: 'user58@email.com',
+      username: 'admin1@email.com',
       password: 'P4ssword',
     };
     await request.post(BASE_URL)

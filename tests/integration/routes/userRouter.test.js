@@ -4,7 +4,6 @@ process.env.RDS_PORT = global.__TESTCONTAINERS_MYSQL_PORT_3306__;
 const supertest = require('supertest');
 const app = require('../../../src/app');
 const database = require('../../../src/database');
-const UserRequestDto = require('../../../src/dtos/userRequestDto');
 
 const request = supertest(app);
 
@@ -22,7 +21,7 @@ afterAll(() => {
 describe('userRouter POST /api/v1/users tests', () => {
   it('Given 2 users with same username When post users Then should create first and return an error for the second', async () => {
     const userRequest = {
-      username: 'user58@email.com',
+      username: 'user1@email.com',
       password: 'P4ssword',
     };
     await request.post(BASE_URL)
@@ -59,7 +58,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
     let token;
     await request.post(BASE_URL)
       .send({
-        username: 'user111@email.com',
+        username: 'user2@email.com',
         password: 'P4ssword',
       })
       .set('Accept', 'application/json')
@@ -67,18 +66,17 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
       .then((response) => {
         firstUserId = response.body.id;
       });
+
+    const secondUserRequestDto = {
+      username: 'user3@email.com',
+      password: 'P4ssword',
+    };
     await request.post(BASE_URL)
-      .send({
-        username: 'user112@email.com',
-        password: 'P4ssword',
-      })
+      .send(secondUserRequestDto)
       .set('Accept', 'application/json')
       .expect(201);
     await request.post(AUTH_URL)
-      .send({
-        username: 'user112@email.com',
-        password: 'P4ssword',
-      })
+      .send(secondUserRequestDto)
       .set('Accept', 'application/json')
       .expect(200)
       .then((response) => {
@@ -96,7 +94,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
   it('Given an created user authenticated When get Then should return user info', async () => {
     let userId;
     let token;
-    const userRequestDto = new UserRequestDto({ username: 'user200@email.com', password: 'P4ssword' });
+    const userRequestDto = { username: 'user4@email.com', password: 'P4ssword' };
     await request.post(BASE_URL)
       .send(userRequestDto)
       .set('Accept', 'application/json')
@@ -148,7 +146,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
     let token;
     await request.post(BASE_URL)
       .send({
-        username: 'user333@email.com',
+        username: 'user6@email.com',
         password: 'P4ssword',
       })
       .set('Accept', 'application/json')
@@ -156,18 +154,17 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
       .then((response) => {
         firstUserId = response.body.id;
       });
+
+    const secondUserRequestDto = {
+      username: 'user7@email.com',
+      password: 'P4ssword',
+    };
     await request.post(BASE_URL)
-      .send({
-        username: 'user334@email.com',
-        password: 'P4ssword',
-      })
+      .send(secondUserRequestDto)
       .set('Accept', 'application/json')
       .expect(201);
     await request.post(AUTH_URL)
-      .send({
-        username: 'user334@email.com',
-        password: 'P4ssword',
-      })
+      .send(secondUserRequestDto)
       .set('Accept', 'application/json')
       .expect(200)
       .then((response) => {
@@ -186,7 +183,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   it('Given an created user authenticated When add balance Then should return user info with balance updated', async () => {
     let userId;
     let token;
-    const userRequestDto = new UserRequestDto({ username: 'user444@email.com', password: 'P4ssword' });
+    const userRequestDto = { username: 'user8@email.com', password: 'P4ssword' };
     await request.post(BASE_URL)
       .send(userRequestDto)
       .set('Accept', 'application/json')
