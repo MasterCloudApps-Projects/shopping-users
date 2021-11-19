@@ -33,7 +33,7 @@ describe('userRouter POST /api/v1/users tests', () => {
       .send(userRequest)
       .expect(409)
       .then((response) => {
-        expect(response.body.error).toBe('Already exists a user with that username');
+        expect(response.body.error).toBe('Already exists an user with that username');
       });
   });
 });
@@ -126,7 +126,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
 describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   const BALANCE_SUFFIX = '/balance';
 
-  it('Given a request without authorization header When add balance to a user Then should return an unauthorized error', async () => request
+  it('Given a request without authorization header When add balance to an user Then should return an unauthorized error', async () => request
     .post(`${BASE_URL}/${0}${BALANCE_SUFFIX}`)
     .send({ amount: 0.01 })
     .expect(401)
@@ -134,7 +134,7 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
       expect(response.body.error).toBe('No token provided.');
     }));
 
-  it('Given a request with invalid token When add balance to a user Then should return a forbidden error', async () => request
+  it('Given a request with invalid token When add balance to an user Then should return a forbidden error', async () => request
     .post(`${BASE_URL}/${0}${BALANCE_SUFFIX}`)
     .send({ amount: 0.01 })
     .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')

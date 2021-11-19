@@ -118,7 +118,7 @@ paths:
           $ref: '#/components/responses/InternalError'
   /users:
     post:
-      description: Creates a user and returns the user ID.
+      description: Creates an user and returns the user ID.
       tags:
         - users
       operationId: createUser

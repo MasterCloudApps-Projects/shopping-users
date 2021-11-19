@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
   try {
     const createdUser = await userService.create(userRequestDto);
     if (!createdUser) {
-      return res.status(409).send({ error: 'Already exists a user with that username' });
+      return res.status(409).send({ error: 'Already exists an user with that username' });
     }
     return res.header('Location', `${req.protocol}://${req.get('host')}${req.originalUrl}/${createdUser.id}`)
       .status(201)

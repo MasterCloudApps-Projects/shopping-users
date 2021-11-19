@@ -38,7 +38,7 @@ describe('userRouter POST /api/v1/users tests', () => {
       .expect('Content-Type', /json/)
       .expect(409)
       .then((response) => {
-        expect(response.body.error).toBe('Already exists a user with that username');
+        expect(response.body.error).toBe('Already exists an user with that username');
       });
   });
 
@@ -99,7 +99,7 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
     return next();
   });
 
-  test('Given a param id different of authorized userId with invalid When get Then should return forbidden response', () => request
+  test('Given an user role with param id different of authorized userId When get Then should return forbidden response', () => request
     .get(GET_URL + 0)
     .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c')
     .expect('Content-Type', /json/)

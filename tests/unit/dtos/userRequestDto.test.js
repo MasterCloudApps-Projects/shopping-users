@@ -37,7 +37,7 @@ describe('userRequestDto tests', () => {
     expect(error).toHaveProperty('message', 'Password must have UpperCase, LowerCase and Number with at least 8 characters');
   });
 
-  test('Given an valid username and password When call constructor Then should return a UserRequestDto', () => {
+  test('Given an valid username and password When call constructor Then should return an UserRequestDto', () => {
     const userRequestDto = new UserRequestDto({ username: 'user@email.com', password: 'P4ssword1' });
 
     expect(userRequestDto.username).toBe('user@email.com');

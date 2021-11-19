@@ -33,7 +33,7 @@ describe('authRouter POST /api/v1/auth tests', () => {
       });
   });
 
-  it('Given a user creation When auth with wrong password Then should return unauthorized', async () => {
+  it('Given an user creation When auth with wrong password Then should return unauthorized', async () => {
     const userRequest = {
       username: 'user2@email.com',
       password: 'P4ssword',
@@ -53,7 +53,7 @@ describe('authRouter POST /api/v1/auth tests', () => {
       });
   });
 
-  it('Given a user creation When auth with him Then should return token', async () => {
+  it('Given an user creation When auth with him Then should return token', async () => {
     const userRequest = {
       username: 'user3@email.com',
       password: 'P4ssword',
