@@ -11,7 +11,7 @@ jest.mock('../../../src/services/userService.js');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
 
-describe('authRouter POST /api/v1/auth tests', () => {
+describe('userAuthRouter POST /api/v1/auth tests', () => {
   const POST_URL = '/api/v1/auth';
   const INVALID_CREDENTIALS_MSG = 'Invalid credentials.';
 

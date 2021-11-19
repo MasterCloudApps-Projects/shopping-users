@@ -7,7 +7,7 @@ const database = require('../../../src/database');
 
 const request = supertest(app);
 
-describe('authRouter POST /api/v1/auth tests', () => {
+describe('userAuthRouter POST /api/v1/auth tests', () => {
   const POST_URL = '/api/v1/auth';
   const INVALID_CREDENTIALS_MSG = 'Invalid credentials.';
   const USERS_POST_URL = '/api/v1/users';
