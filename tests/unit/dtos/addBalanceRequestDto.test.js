@@ -2,6 +2,20 @@ const AddBalanceRequestDto = require('../../../src/dtos/addBalanceRequestDto');
 const { NoErrorThrownError, getError } = require('../errors/noErrorThrownError');
 
 describe('userRequestDto tests', () => {
+  test('Given a request without amount When call constructor Then should throw an error', async () => {
+    const error = await getError(async () => new AddBalanceRequestDto({}));
+
+    expect(error).not.toBeInstanceOf(NoErrorThrownError);
+    expect(error).toHaveProperty('message', 'Amount field is required');
+  });
+
+  test('Given a strig as amount When call constructor Then should throw an error', async () => {
+    const error = await getError(async () => new AddBalanceRequestDto({ amount: '-0.1' }));
+
+    expect(error).not.toBeInstanceOf(NoErrorThrownError);
+    expect(error).toHaveProperty('message', 'Amount must be a number');
+  });
+
   test('Given less than 0 amount When call constructor Then should throw an error', async () => {
     const error = await getError(async () => new AddBalanceRequestDto({ amount: -0.1 }));
 

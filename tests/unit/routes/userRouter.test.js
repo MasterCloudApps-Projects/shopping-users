@@ -161,6 +161,25 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
   const USER_ID = 1;
   const BALANCE_SUFFIX = '/balance';
 
+  test('Given a request without amount When add balance Then should return bad request response', () => request
+    .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+    .set('Authorization', BEARER_TOKEN)
+    .expect('Content-Type', /json/)
+    .expect(400)
+    .then((response) => {
+      expect(response.body.error).toBe('Amount field is required');
+    }));
+
+  test('Given a request with string amount When add balance Then should return bad request response', () => request
+    .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
+    .send({ amount: '-0.01' })
+    .set('Authorization', BEARER_TOKEN)
+    .expect('Content-Type', /json/)
+    .expect(400)
+    .then((response) => {
+      expect(response.body.error).toBe('Amount must be a number');
+    }));
+
   test('Given a request with amount less than 0 When add balance Then should return bad request response', () => request
     .post(`${BASE_URL + USER_ID + BALANCE_SUFFIX}`)
     .send({ amount: -0.01 })
