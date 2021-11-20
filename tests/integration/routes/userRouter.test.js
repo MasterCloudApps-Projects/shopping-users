@@ -9,6 +9,8 @@ const request = supertest(app);
 
 const BASE_URL = '/api/v1/users';
 const AUTH_URL = '/api/v1/auth';
+const ADMINS_BASE_URL = '/api/v1/admins';
+const ADMINS_AUTH_URL = `${ADMINS_BASE_URL}/auth`;
 
 beforeAll(async () => {
   await database.connect();
@@ -119,6 +121,47 @@ describe('userRouter GET /api/v1/users/:id tests', () => {
         expect(response.body.balance).toBe(0.0);
       });
   });
+
+  it('Given an authenticated admin When try to get other user info Then should return user info', async () => {
+    const userRequestDto = { username: 'user5@email.com', password: 'P4ssword' };
+
+    let userId;
+    let token;
+
+    await request.post(BASE_URL)
+      .send(userRequestDto)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .then((response) => {
+        userId = response.body.id;
+      });
+
+    const adminRequestDto = {
+      username: 'adminUser1@email.com',
+      password: 'P4ssword',
+    };
+    await request.post(ADMINS_BASE_URL)
+      .send(adminRequestDto)
+      .set('Accept', 'application/json')
+      .expect(201);
+    await request.post(ADMINS_AUTH_URL)
+      .send(adminRequestDto)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .then((response) => {
+        token = response.body.token;
+      });
+
+    return request
+      .get(`${BASE_URL}/${userId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.id).toBe(userId);
+        expect(response.body.username).toBe(userRequestDto.username);
+        expect(response.body.balance).toBe(0.0);
+      });
+  });
 });
 
 describe('userRouter POST /api/v1/users/:id/balance tests', () => {
@@ -198,6 +241,47 @@ describe('userRouter POST /api/v1/users/:id/balance tests', () => {
       .then((response) => {
         token = response.body.token;
       });
+    return request
+      .post(`${BASE_URL}/${userId}${BALANCE_SUFFIX}`)
+      .send({ amount: 0.01 })
+      .set('Authorization', `Bearer ${token}`)
+      .expect(200)
+      .then((response) => {
+        expect(response.body.id).toBe(userId);
+        expect(response.body.username).toBe(userRequestDto.username);
+        expect(response.body.balance).toBe(0.01);
+      });
+  });
+
+  it('Given an authenticated admin When try to add balance to other user Then sould return user info with balance updated', async () => {
+    let userId;
+    let token;
+
+    const userRequestDto = { username: 'user9@email.com', password: 'P4ssword' };
+    await request.post(BASE_URL)
+      .send(userRequestDto)
+      .set('Accept', 'application/json')
+      .expect(201)
+      .then((response) => {
+        userId = response.body.id;
+      });
+
+    const adminRequestDto = {
+      username: 'adminUser2@email.com',
+      password: 'P4ssword',
+    };
+    await request.post(ADMINS_BASE_URL)
+      .send(adminRequestDto)
+      .set('Accept', 'application/json')
+      .expect(201);
+    await request.post(ADMINS_AUTH_URL)
+      .send(adminRequestDto)
+      .set('Accept', 'application/json')
+      .expect(200)
+      .then((response) => {
+        token = response.body.token;
+      });
+
     return request
       .post(`${BASE_URL}/${userId}${BALANCE_SUFFIX}`)
       .send({ amount: 0.01 })
