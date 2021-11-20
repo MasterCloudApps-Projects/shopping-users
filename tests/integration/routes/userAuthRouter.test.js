@@ -7,18 +7,18 @@ const database = require('../../../src/database');
 
 const request = supertest(app);
 
+beforeAll(async () => {
+  await database.connect();
+});
+
+afterAll(() => {
+  database.disconnect();
+});
+
 describe('userAuthRouter POST /api/v1/auth tests', () => {
   const POST_URL = '/api/v1/auth';
   const INVALID_CREDENTIALS_MSG = 'Invalid credentials.';
   const USERS_POST_URL = '/api/v1/users';
-
-  beforeAll(async () => {
-    await database.connect();
-  });
-
-  afterAll(() => {
-    database.disconnect();
-  });
 
   it('Given not existing username When auth Then should return unauthorized', async () => {
     const userRequest = {
