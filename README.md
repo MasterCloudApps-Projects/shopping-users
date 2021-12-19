@@ -26,7 +26,7 @@ Exists a [.husky](.husky) folder in project that contains the script to be execu
 
 ### Github actions
 Furthermore, when a push is done on remote branch, github actions jobs will be fired. These actions are defined in [.github/workflows](.github/workflows) folder.
-* github-action: defines jobs to execute when a push (or a PR) is done in the branch. In this case only exist one job composed of the next steps. All the jobs depends o the previous one, so if one of them fails, the project won't be deployed in the PRE environment:
+* ci-cd: defines jobs to execute when a push (or a PR) is done in the branch. In this case only exist one job composed of the next steps. All the jobs depends o the previous one, so if one of them fails, the project won't be deployed in the PRE environment:
    * eslint: Analyzes source code in the branch, if exists style errors.
    * tests: Run unitary and integration tests in the branch.
    * publish-image: Publish Docker image __tfm-users__ with tag __trunk__ in [Dockerhub](https://hub.docker.com/).
