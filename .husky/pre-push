@@ -16,6 +16,6 @@ then
         echo "version: $ver"
         exit 1
     fi
+else
+  npm run it:test
 fi
-
-npm run it:test
