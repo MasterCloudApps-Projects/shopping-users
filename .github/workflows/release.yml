@@ -128,3 +128,23 @@ jobs:
           helm: helm3
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+
+  bump-version:
+    needs: [ publish-release ]
+    name: 'Bump Version on main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - name: 'Automated Version Bump'
+        id: version-bump
+        uses: 'phips28/gh-action-bump-version@master'
+        with:
+          target-branch: 'main'
+          default: minor
+          commit-message: 'CI: bumps version'
+          skip-tag: 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
