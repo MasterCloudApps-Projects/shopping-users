@@ -18,7 +18,7 @@ COPY package-lock.json /usr/src/app/
 
 
 # We install the dependencies that the app needs
-RUN npm ci --only=production
+RUN npm ci --only=production --ignore-scripts
 
 # Indicates the port that the container exposes
 EXPOSE 8443

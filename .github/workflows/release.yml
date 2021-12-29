@@ -77,3 +77,54 @@ jobs:
           body: ${{steps.github_release.outputs.changelog}}
           draft: false
           prerelease: false
+
+  publish-image:
+    needs: [ publish-release ]
+    name: Publish Docker image
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: tfm-users
+      IMAGE_LATEST_TAG: latest
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: .
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }},${{ secrets.DOCKERHUB_USERNAME }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_LATEST_TAG }}
+
+  deploy:
+    needs: [ publish-image ]
+    name: Deploy in k8s
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - name: 'Deploy'
+        uses: 'deliverybot/helm@v1'
+        with:
+          release: 'production'
+          track: canary
+          namespace: 'tfm-amartinm82'
+          chart: './helm/charts'
+          values: |
+            namespace: tfm-amartinm82
+            mysql.host: ${{ secrets.MYSQL_HOST }}
+            mysql.password: ${{ secrets.MYSQL_PASSWORD }}
+            image:
+              tag: ${{ github.ref_name }}
+
+          helm: helm3
+        env:
+          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
