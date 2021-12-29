@@ -28,3 +28,26 @@ jobs:
             if (${{ github.ref_name != steps.package_version.outputs.version }}) {
               core.setFailed('Tag does not match with package version')
             }
+
+  publish-package:
+    needs: [ check-tag ]
+    name: Publish package on  Github
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: 'Checkout source code'
+        uses: actions/checkout@v2
+        with:
+          ref: 'main'
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+          registry-url: https://npm.pkg.github.com/
+      - name: Install
+        run: npm ci
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
