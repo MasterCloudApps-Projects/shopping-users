@@ -6,6 +6,7 @@ info:
 servers:
   - url: https://localhost:8443/api/v1
   - url: https://users-tfm-dev-amartinm82.cloud.okteto.net/api/v1
+  - url: https://users-tfm-amartinm82.cloud.okteto.net/api/v1
 paths:
   /admins/auth:
     post:
