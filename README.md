@@ -108,6 +108,7 @@ Project is composed by the next modules:
 * **dockerize.sh**: script responsible for generating the docker image locally with the current code, without uploading it to [Dockerhub](https://hub.docker.com/). To do this, use the environment variable `DOCKER_LOCAL_IMAGE` as the image name (which also adds writes to the `.env` file from which docker-compose retrieves the environment variables to use). Then build the app by running the docker-compose file above.
 * **jest-testcontainers-config.js**: file with testcontainers configuration to run integration tests using necessary docker images.
 * **jest.config.js**: configuration to preset `@trendyol/jest-testcontainers` module to use containers for testing.
+* **LICENSE**: Apache 2 license file.
 * **package-lock.json**: is automatically generated for any operations where npm modifies either the node_modules tree, or package.json. It describes the exact tree that was generated, such that subsequent installs are able to generate identical trees, regardless of intermediate dependency updates.
 * **package.json**: holds various metadata relevant to the project.
 * **README.md**: this file.
