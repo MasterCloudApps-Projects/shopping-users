@@ -80,7 +80,7 @@ Project is composed by the next modules:
   * **Chart.yaml**: file containing information about the chart.
   * **values.yaml**: The default configuration values for this chart.
 * **k8s**: k8s manifests and scripts to apply all of them or remove them.
-* **postman**: postman collection and environemnts configuration.
+* **postman**: postman collection and environments configuration.
 * **src**: source code.
   * **dtos**: request and responses DTOs.
   * **middlewares**: middlewares for authentication and authorization.
