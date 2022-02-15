@@ -114,8 +114,7 @@ jobs:
       - name: 'Deploy'
         uses: 'deliverybot/helm@v1'
         with:
-          release: 'production'
-          track: canary
+          release: 'users-production'
           namespace: 'tfm-amartinm82'
           chart: './helm/charts'
           values: |
