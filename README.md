@@ -239,8 +239,8 @@ Exists a [.husky](.husky) folder in project that contains the script to be execu
 
 ## Deployment
 This project has two available environments:
-* Preproduction (PRE): Used to test the application previously to release it in a productive environment. This environment is accessible in the URL https://users-tfm-dev-amartinm82.cloud.okteto.net/api/v1.
-* Production (PRO): productive environment. Accesible in URL https://users-tfm-amartinm82.cloud.okteto.net/api/v1.
+* Preproduction (PRE): Used to test the application previously to release it in a productive environment. This environment is accessible via API Gateway in the URL https://apigw-tfm-dev-amartinm82.cloud.okteto.net.
+* Production (PRO): productive environment. Accesible in URL https://apigw-tfm-amartinm82.cloud.okteto.net.
 
 The mechanism used to deploy the application in any of the previous environment is via github actions, that are defined in workflows in folder [.github/workflows](.github/workflows).
 ### PRE
@@ -273,7 +273,7 @@ As a note, in PRO environment, helm chart is called with `mysql.create` disabled
 
 ### Checking application is deployed
 Like in [Usage > Run application > Checking application is running](#checking-application-is-running) you can check if the application is successfully deployed using Openapi definition or Postman collection. 
-* **Openapi**: open `openapi-v1.yml` content in [swagger editor](https://editor.swagger.io/) and select https://users-tfm-dev-amartinm82.cloud.okteto.net/api/v1 or https://users-tfm-amartinm82.cloud.okteto.net/api/v1localhost server and execute endpoints you want.
+* **Openapi**: open `openapi-v1.yml` content in [swagger editor](https://editor.swagger.io/) and select https://apigw-tfm-dev-amartinm82.cloud.okteto.net or https://apigw-tfm-amartinm82.cloud.okteto.net server and execute endpoints you want.
 * **Postman**: select `TFM-pre-env` or `TFM-pro-env` environment variable. Execute postman collection as described in [Usage > Run application > Checking application is running](#checking-application-is-running).
   
 ## Developers

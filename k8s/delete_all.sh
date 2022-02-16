@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# delete ingress 
-printf "\n==> Deleting ingress\n"
-kubectl delete -f ingress.yml
-
 # delete users container
 printf "\n==> Deleting Users API deployment and service\n"
 kubectl delete -f users-api.yml

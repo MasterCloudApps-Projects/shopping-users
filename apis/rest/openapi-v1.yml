@@ -5,8 +5,10 @@ info:
   version: 1.0.0
 servers:
   - url: https://localhost:8443/api/v1
-  - url: https://users-tfm-dev-amartinm82.cloud.okteto.net/api/v1
-  - url: https://users-tfm-amartinm82.cloud.okteto.net/api/v1
+  - url: https://apigw-tfm-dev-amartinm82.cloud.okteto.net
+    description: Preproduction server (for users auth endpoint use /users/auth instead of /auth)
+  - url: https://apigw-tfm-amartinm82.cloud.okteto.net
+    description: Production server (for users auth endpoint use /users/auth instead of /auth)
 paths:
   /admins/auth:
     post:

@@ -50,10 +50,3 @@ Secrets
 {{- define "user.secrets" -}}
 {{- printf "%s-%s-%s" .Release.Name "users" "secrets" | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
-
-{{/*
-Ingress
-*/}}
-{{- define "ingress.name" -}}
-{{- printf "%s-%s" .Release.Name "ingress" | replace "+" "_" | trunc 63 | trimSuffix "-" }}
-{{- end }}
