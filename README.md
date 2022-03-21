@@ -255,6 +255,7 @@ So, when we push in the main branch, because of the action execution, it results
 As a note, in PRE environment, helm chart variables are passed to create a MYSQL container with persistent volume that can't be removed.
 
 ### PRO
+#### Generate and deploy a new release
 To deploy in PRO environment is necessary to generate a new release. To do that, execute:
 ```
 npm run release
@@ -268,7 +269,11 @@ Due to the new tag is pushed, the workflow defined in [release.yml](.github/work
   * **publish-image**: Depends on previous job. Generate docker image of app, tagging it with `latest` and  `{pushed_tag}` (i.e: if we generated the tag 1.2.0. it tag the new image with 1.2.0), and publishing them in [Dockerhub](https://hub.docker.com/).
   * **deploy**: Depends on previous job. It deploys application in PRO k8s cluster using `{pushed_tag}` image. For this, it uses the helm chart defined in [helm/charts](./helm/charts/) folder.
   *  **bump-version**: It depends on `publish-release` job, so is executed parallelly with `publish-release`. It increments the package version and update the remote repository, to avoid version conflicts during the development.
-  
+
+#### Deploy existing release
+To deploy an existing release you can execute in github manual workflow defined in [manual-release-deploy.yml](.github/workflows/manual-release-deploy.yml).
+Select main branch (the only one that exists), and introduce the release to deploy in the input. The release will be deployed in PRO environment.
+
 As a note, in PRO environment, helm chart is called with `mysql.create` disabled, so a MySQL container is not created, and application point againts a MYSQL instance.
 
 ### Checking application is deployed
