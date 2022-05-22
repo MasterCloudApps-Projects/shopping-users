@@ -116,7 +116,8 @@ describe('consumerService consumeValidateBalanceEvent function tests', () => {
           .toBe(JSON.stringify(orderUpdateRequestedEvent));
         expect(userService.addBalance.mock.calls.length).toBe(1);
         expect(userService.addBalance.mock.calls[0][0]).toBe(message.shoppingCart.userId);
-        expect(userService.addBalance.mock.calls[0][1]).toBe(-message.shoppingCart.totalPrice);
+        expect(userService.addBalance.mock.calls[0][1])
+          .toEqual({ amount: -message.shoppingCart.totalPrice });
       });
   });
 
@@ -147,7 +148,8 @@ describe('consumerService consumeValidateBalanceEvent function tests', () => {
           .toBe(JSON.stringify(orderUpdateRequestedEvent));
         expect(userService.addBalance.mock.calls.length).toBe(1);
         expect(userService.addBalance.mock.calls[0][0]).toBe(message.shoppingCart.userId);
-        expect(userService.addBalance.mock.calls[0][1]).toBe(-message.shoppingCart.totalPrice);
+        expect(userService.addBalance.mock.calls[0][1])
+          .toEqual({ amount: -message.shoppingCart.totalPrice });
       });
   });
 });

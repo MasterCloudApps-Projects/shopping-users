@@ -41,7 +41,7 @@ async function consumeValidateBalanceEvent(message) {
     } else {
       console.log(`Valid user balance for order ${orderValidationRequestedEvent.id}`);
       user = await userService
-        .addBalance(user.id, -orderValidationRequestedEvent.shoppingCart.totalPrice);
+        .addBalance(user.id, { amount: -orderValidationRequestedEvent.shoppingCart.totalPrice });
       console.log(`User ${user.id} balance updated to ${user.balance}`);
       orderUpdateRequestedEvent.state = orderValidationRequestedEvent.successState;
     }

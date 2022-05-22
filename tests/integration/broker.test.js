@@ -77,7 +77,7 @@ describe('Broker tests', () => {
   it('Given an existing user with enough balance When consume validate balance event Then should update user balance and send change order state event with success state', async () => {
     let createdUserId;
     let token;
-    const userRequestDto = { username: 'user1@email.com', password: 'P4ssword' };
+    const userRequestDto = { username: 'orderUser1@email.com', password: 'P4ssword' };
     await request.post(BASE_URL)
       .send(userRequestDto)
       .set('Accept', 'application/json')
@@ -94,13 +94,13 @@ describe('Broker tests', () => {
       });
     await request
       .post(`${BASE_URL}/${createdUserId}${BALANCE_SUFFIX}`)
-      .send({ amount: 19.99 })
+      .send({ amount: 20 })
       .set('Authorization', `Bearer ${token}`)
       .expect(200)
       .then((response) => {
         expect(response.body.id).toBe(createdUserId);
         expect(response.body.username).toBe(userRequestDto.username);
-        expect(response.body.balance).toBe(19.99);
+        expect(response.body.balance).toBe(20);
       });
 
     const validateItemsMsg = {
@@ -148,14 +148,14 @@ describe('Broker tests', () => {
       .then((response) => {
         expect(response.body.id).toBe(createdUserId);
         expect(response.body.username).toBe(userRequestDto.username);
-        expect(response.body.balance).toBe(0.0);
+        expect(response.body.balance).toBe(0.01);
       });
   });
 
   it('Given an existing user without enough balance When consume validate balance event Then should not update user balance and send change order state event with failure state', async () => {
     let createdUserId;
     let token;
-    const userRequestDto = { username: 'user2@email.com', password: 'P4ssword' };
+    const userRequestDto = { username: 'orderUser2@email.com', password: 'P4ssword' };
     await request.post(BASE_URL)
       .send(userRequestDto)
       .set('Accept', 'application/json')
