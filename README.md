@@ -55,6 +55,7 @@ docker-compose -f docker-compose-dev.yml up
 * [jsonwebtoken ^8.5.1 (>=8.5.1<8.6.0)](https://www.npmjs.com/package/jsonwebtoken): To manage JWT tokens.
 * [mysql2 ^2.3.2 (>=2.3.2<2.4.0)](https://www.npmjs.com/package/mysql2): MySQL client for Node.js.
 * [sequelize ^6.8.0 (>=6.8.0<6.9.0)](https://www.npmjs.com/package/sequelize):  Node.js ORM tool.
+* [kafkajs ^1.16.0 (>=1.16.0<1.17.0)](https://kafka.js.org/docs/getting-started): Apache kafka client for node.js.
 
 ### Development dependencies
 * [@trendyol/jest-testcontainers ^2.1.0 (>=2.1.0<2.2.0)](https://github.com/Trendyol/jest-testcontainers): Jest preset for running docker containers with our tests.
@@ -89,7 +90,9 @@ Project is composed by the next modules:
   * **routes**: controllers.
   * **services**: services with business logic.
   * **app.js**: maps urls to controllers.
+  * **broker.js**: establish kafka connection and listen for topics.
   * **database.js**: establish database connection with a retry mechanism.
+  * **kafka.js**: contains kafka client, consumer and producer.
   * **server.js**: launch the app.
 * **tests**: application tests.
   * **integration**: integration tests.
@@ -102,8 +105,8 @@ Project is composed by the next modules:
     * **jest.config.unit.js**: jest unit test config (necessary to override default test configuration used for integration test)
 * **.dockerignore**: file with files and folders to ignore when generating docker image.
 * **.eslintrc.js**: ESLint configuration file.
-* **docker-compose-dev.yml**: allows to launch the necessary resources to run the app in local (MySQL database).
-* **docker-compose.yml**: launch the application, along with the necessary resources (MySQL database), using a local docker image. The image to use is retrieved from the environment variable `DOCKER_LOCAL_IMAGE`.
+* **docker-compose-dev.yml**: allows to launch the necessary resources to run the app in local (MySQL database, Kafka broker).
+* **docker-compose.yml**: launch the application, along with the necessary resources (MySQL database, Kafka broker), using a local docker image. The image to use is retrieved from the environment variable `DOCKER_LOCAL_IMAGE`.
 * **Dockerfile**: contains all the commands to assemble the app image.
 * **dockerize.sh**: script responsible for generating the docker image locally with the current code, without uploading it to [Dockerhub](https://hub.docker.com/). To do this, use the environment variable `DOCKER_LOCAL_IMAGE` as the image name (which also adds writes to the `.env` file from which docker-compose retrieves the environment variables to use). Then build the app by running the docker-compose file above.
 * **jest-testcontainers-config.js**: file with testcontainers configuration to run integration tests using necessary docker images.
@@ -135,6 +138,14 @@ Furthermore, project is configured to execute ESLint before executing tests:
 * **db.db_name**: Database name. Read value from `RDS_DB_NAME` environment value, if not exists, then default value is `users`.
 * **db.connection.max_retries**: Max retries to connect to database when launching the app. Read value from `CONN_MAX_RETRIES` environment value, if not exists, then default value is `3`.
 * **db.connection.retry-interval**: Retry connection interval between connection retries. Read value from `CONN_RETRY_INTERVAL` environment value, if not exists, then default value is `30000` milliseconds.
+* **kafka.enabled**: indicates if kafka consumer is enabled.
+* **kafka.retry.initialRetryTime**: Initial value used to calculate the kafka retry in milliseconds.
+* **kafka.retry.retries**: Max number of kafka retries per call.
+* **kafka.host**: kafka host.
+* **kafka.port**: kafka port.
+* **kafka.groupId**: kafka group identifier.
+* **kafka.topics.validateBalance**: validate users balance topic name.
+* **kafka.topics.changeState**: order change state topic name.
 * **secret**: Secret used to generate JWT tokens. Read value from `TOKEN_SECRET` environment value, if not exists, then default value is `supersecret`.
 * **token.expiration**: JWT token expiration time. Read value from `TOKEN_EXPIRATION` environment value, if not exists, then default value is `300` seconds.
 
@@ -154,6 +165,9 @@ The next variables are defined to use helm chart in [helm/charts/values.yaml](./
 * **mysql.resources.requests.cpu**: database instance requested cpu. By default `250m`.
 * **mysql.resources.limits.memory**: database instance limit memory. By default `512Mi`.
 * **mysql.resources.limits.cpu**: database instance requested cpu. By default `500m`.
+* **kafka.enabled**: Indicates if kafka consumer is enabled. By default is `false`.
+* **kafka.host**: Kafka host. By default `127.0.0.1`.
+* **kafka.port**: Kafka port. By default `9092`.
 * **securityContext.runAsUser**: user which run the app in container. By default `1001`.
 * **replicaCount**: number of replicas for the app. By default `1`.
 * **image.repository**: app image name. By default `amartinm82/tfm-users`.
@@ -226,6 +240,16 @@ In both cases, [locally](#locally) and [As docker container](#as-docker-containe
 * **Postman**: select `TFM-local-env` environment variable. Execute postman collection:
   * **Manually**: Set values you want in the endpoint body and run it.
   * **Automatically**: Set values to `userUsername` and `adminUsername` variables, and execute [Postman Collection Runner](https://learning.postman.com/docs/running-collections/intro-to-collection-runs/).
+
+**NOTE:** If the containers are not accessible via localhost, it will be necessary to use ${DOCKER_HOST_IP} instead of localhost. To do this, give a value to the variable:
+```
+export DOCKER_HOST_IP=127.0.0.1
+```
+For Mac:
+```
+sudo ifconfig lo0 alias 10.200.10.1/24  # (where 10.200.10.1 is some unused IP address)
+export DOCKER_HOST_IP=10.200.10.1
+```
 
 ## Contributing
 To contribute to this project have in mind:
