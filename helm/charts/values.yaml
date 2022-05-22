@@ -25,6 +25,12 @@ mysql:
       memory: "512Mi"
       cpu: "500m"
 
+# Kafka
+kafka:
+  enabled: false
+  host: "127.0.0.1"
+  port: 9092
+
 # security context
 securityContext:
   runAsUser: 1001

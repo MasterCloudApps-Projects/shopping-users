@@ -31,6 +31,9 @@ jobs:
               host: '${{ secrets.MYSQL_HOST }}'
               password: '${{ secrets.MYSQL_PASSWORD }}'
               user: '${{ secrets.MYSQL_USER }}'
+            kafka:
+              enabled: true
+              host: pur-pro-kafka-hs
           helm: helm3
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
