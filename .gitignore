@@ -111,3 +111,7 @@ dist
 
 # MySQL container volume
 mysql_db
+
+# Kafka and zookeeper containers volumes
+kafka
+zookeeper

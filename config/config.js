@@ -11,7 +11,7 @@ module.exports = {
   'db.connection.max_retries': process.env.CONN_MAX_RETRIES || 3,
   'db.connection.retry-interval': process.env.CONN_RETRY_INTERVAL || 30000,
 
-  'kafka.enabled': process.env.KAFKA_ENABLED || true,
+  'kafka.enabled': process.env.KAFKA_ENABLED || false,
   'kafka.retry.initialRetryTime': process.env.KAFKA_INIT_RETY_TIME || 10000,
   'kafka.retry.retries': process.env.KAFKA_RETRIES || 3,
   'kafka.host': process.env.KAFKA_HOST || '127.0.0.1',
