@@ -154,7 +154,7 @@ The next variables are defined to use helm chart in [helm/charts/values.yaml](./
 * **namespace**: K8s namespace. By default `tfm-dev-amartinm82`.
 * **mysql.create**: Indicates if is necessary to deploy a MySQL container. By default `false`. If this variable is `false` then the __mysql.image.* , mysql.replicas, mysql.resources.*__ variables won't have effect.
 * **mysql.image.repository**: database image name. By default `mysql`.
-* **mysql.image.tag**: image tag. By default `8.0.22`.
+* **mysql.image.tag**: image tag. By default `8.0.27`.
 * **mysql.host**: database url. By default `localhost`.
 * **mysql.user**: database username. By default `root`.
 * **mysql.password**: database password. By default `password`.
